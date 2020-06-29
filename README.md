@@ -1,1 +1,1 @@
-# battleship
+# Simple battleship program in python.
