@@ -26,7 +26,7 @@ random.seed(datetime.now())
 
 # Set default values
 default_x = 10  # X axis (A through J)
-default_y = 15  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
+default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
 
 
 def print_column_heading():
@@ -45,9 +45,9 @@ def setup_grid():
 
 def print_empty_grid(max_x, max_y):
     print_column_heading()
-    y = 1
-    while y <= max_y:
-        row = [y]           # first value in row is row number (1 to max_y)
+    y = 0
+    while y < max_y:
+        row = [y]           # first value in row is row number (0 to max_y - 1)
         x = 1
         while x <= max_x:
             row.append("O")
@@ -64,27 +64,91 @@ def setup_ships():
     for ship in ships:
         (a, b, c) = ship
         print(a, b, c)
+    return ships
 
 
-def generate_random(max_x, max_y):
+def generate_random_position(max_x, max_y):
     num = random.randint(1, max_x * max_y)
-    return num
-
-
-def place_ships(max_x, max_y):
-    """Place ships in order of largest to smallest - seems easiest.
-       Generate random number which determines location"""
-    num = generate_random(max_x, max_y)
     x = num % max_x
     y = num // max_x
     print(num, "translates to x=", x, "and y=", y)
+    return (x, y)
 
+
+def generate_random_orientation():
+    """return value of 1 through 4 inclusive
+       where 1 = up, 2 = down, 3 = left, 4 = right
+       if that does not fit then try the next orientation
+    """
+    orient = random.randint(1,4)
+    return orient
+
+
+def does_it_fit_on_grid(x, y, max_x, max_y, orient, size):
+    # does it fully fit on grid?
+    count = 4
+    fit = False
+    while not fit and count > 0:
+        if orient == 1: # see if ship fits with upward orientation
+            if y >= size: 
+                fit = True
+                return (fit, orient) # fits 
+            else:
+                orient = orient + 1 # try next orientation
+                count = count - 1
+
+        if orient == 2: # does it fit with downward orientation
+            if y + size <= max_y:
+                fit = True
+                return (fit, orient) # fits 
+            else:
+                orient = orient + 1 # try next orientation
+                count = count - 1
+
+        if orient == 3: # does it fit with left orientation
+            if x >= size:
+                fit = True
+                return (fit, orient) # fits 
+            else:
+                orient = orient + 1 # try next orientation
+                count = count - 1
+    
+        if orient == 4: # does it fit with right orientation
+            if x + size <= max_x:
+                fit = True
+                return (fit, orient) # fits 
+            else:
+                orient = 1 # try first orientation
+                count = count - 1
+
+
+def populate_grid(x, y, orient, size, char):
+    pass
+
+
+def place_ships(max_x, max_y, ships):
+    """Place ships in order of largest to smallest - seems easiest.
+       Generate random number which determines location
+    """
+    for ship in ships:
+        (type, char, size) = ship
+        fit = False
+        while not fit:
+            (x, y) = generate_random_position(max_x, max_y)
+
+            # choose random orientation for ship (up, down, left, right)
+            orient = generate_random_orientation()
+
+            # see which orientation fits on grid
+            (fit, orient) = does_it_fit_on_grid(x, y, max_x, max_y, orient, size)
+
+        populate_grid(x, y, orient, size, char)
 
 def main():
     (x, y) = setup_grid()
     print_empty_grid(x, y)
-    setup_ships()
-    place_ships(x, y)
+    ships = setup_ships()
+    place_ships(x, y, ships)
 
 
 if __name__ == "__main__":
