@@ -29,7 +29,7 @@ default_x = 10  # X axis (A through J)
 default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
 
 
-def print_column_heading():
+def print_column_headings():
     col = "ABCDEFGHIJ"
     heading = [0]
     for j in col:
@@ -44,7 +44,7 @@ def setup_grid():
     return (max_x, max_y)
 
 def print_empty_grid(max_x, max_y):
-    print_column_heading()
+    print_column_headings()
     y = 0
     row = []
     while y < max_y:
@@ -88,8 +88,29 @@ def generate_random_orientation():
     return orient
 
 
+def does_it_fit(x, y, max_x, max_y, orient, size):
+    """ Does it fully fit on grid with this orientation?
+        Do not try all remaining orientations. This simplifies the code and logic.
+        If not then calling routine needs new random position and new orientation 
+        and try again
+        Return True if fits, else return False
+    """
+    fit = False
+    if orient == 1 and True:
+        fit = True
+    if orient == 2:
+        fit = True
+    if orient == 3:
+        fit = True
+    if orient == 4:
+        fit = True
+    return fit
+
 def does_it_fit_on_grid(x, y, max_x, max_y, orient, size):
-    # does it fully fit on grid?
+    """Does it fully fit on grid with initial orientation?
+       If not, then try all other orientations
+       As a last resort then new position and try again
+    """   
     count = 4
     fit = False
     while not fit and count > 0:
@@ -144,6 +165,12 @@ def populate_grid(x, y, orient, size, char, row):
             size = size - 1
 
 
+def print_grid(max_x, max_y, row):
+    """ Print all rows now that they are populated"""
+    for r in row:
+        print(r)
+
+
 def place_ships(max_x, max_y, ships, row):
     """Place ships in order of largest to smallest - seems easiest.
        Generate random number which determines location
@@ -157,11 +184,14 @@ def place_ships(max_x, max_y, ships, row):
             # choose random orientation for ship (up, down, left, right)
             orient = generate_random_orientation()
 
-            # see which orientation fits on grid
-            (fit, orient, size) = does_it_fit_on_grid(x, y, max_x, max_y, orient, size)
+            # Does this position and orientation fit on grid?
+            fit = does_it_fit(x, y, max_x, max_y, orient, size)
             print("FIT=",fit, "ORIENT=",orient,"SIZE=", size)
 
         populate_grid(x, y, orient, size, char, row)
+
+        print_column_headings()
+        print_grid(max_x, max_y, row)
 
 def main():
     (x, y) = setup_grid()
