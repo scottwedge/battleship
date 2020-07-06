@@ -88,63 +88,34 @@ def generate_random_orientation():
     return orient
 
 
-def does_it_fit(x, y, max_x, max_y, orient, size):
-    """ Does it fully fit on grid with this orientation?
-        Do not try all remaining orientations. This simplifies the code and logic.
-        If not then calling routine needs new random position and new orientation 
-        and try again
-        Return True if fits, else return False
-    """
+def does_it_fit(x, y, max_x, max_y, orientation, size):
+    """ Does ship fit on grid with this orientation at this location?
+
+    Parameters:
+    x: horizontal axis, value between 0 and max_x, left-most position = 0
+    y: vertical axis, value between 0 and max_y, top-most position = 0
+    max_x: maximum row width
+    max_y: maximum column height
+    orientation: 
+        Where = 1 is upwards aka "north" from random point (x,y)
+        Where = 2 is downwards aka "south" from random point
+        Where = 3 is leftward aka "west" from random point
+        Where = 4 is rightward aka "east" from random point.
+
+   Return:
+   fit: True or False     True if fits on grid, otherwise false
+   """
     fit = False
-    if orient == 1 and True:
+    if orient == 1 and size <= y:
         fit = True
-    if orient == 2:
+    if orient == 2 and y + size <= max_y:
         fit = True
-    if orient == 3:
+    if orient == 3 and size <= max_x:
         fit = True
-    if orient == 4:
+    if orient == 4 and size + x <= max_x:
         fit = True
     return fit
 
-def does_it_fit_on_grid(x, y, max_x, max_y, orient, size):
-    """Does it fully fit on grid with initial orientation?
-       If not, then try all other orientations
-       As a last resort then new position and try again
-    """   
-    count = 4
-    fit = False
-    while not fit and count > 0:
-        if orient == 1: # see if ship fits with upward orientation
-            if y >= size: 
-                fit = True
-                return (fit, orient, size) # fits 
-            else:
-                orient = orient + 1 # try next orientation
-                count = count - 1
-
-        if orient == 2: # does it fit with downward orientation
-            if y + size <= max_y:
-                fit = True
-                return (fit, orient, size) # fits 
-            else:
-                orient = orient + 1 # try next orientation
-                count = count - 1
-
-        if orient == 3: # does it fit with left orientation
-            if x >= size:
-                fit = True
-                return (fit, orient, size) # fits 
-            else:
-                orient = orient + 1 # try next orientation
-                count = count - 1
-    
-        if orient == 4: # does it fit with right orientation
-            if x + size <= max_x:
-                fit = True
-                return (fit, orient, size) # fits 
-            else:
-                orient = 1 # try first orientation
-                count = count - 1
 
 
 def populate_grid(x, y, orient, size, char, row):
