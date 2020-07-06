@@ -90,8 +90,9 @@ def generate_random_orientation():
 
 def does_it_fit(x, y, max_x, max_y, orient, size):
     """ Does it fully fit on grid with this orientation?
-        Do not try all remaining orientations. This simplifies the code and logic.
-        If not then calling routine needs new random position and new orientation 
+        Do not try other three orientations if first orientation does not fit. 
+        This simplifies the code and logic.
+        If not fit then calling routine needs new random position and new orientation 
         and try again
         Return True if fits, else return False
     """
@@ -108,8 +109,9 @@ def does_it_fit(x, y, max_x, max_y, orient, size):
 
 def does_it_fit_on_grid(x, y, max_x, max_y, orient, size):
     """Does it fully fit on grid with initial orientation?
-       If not, then try all other orientations
-       As a last resort then new position and try again
+       If not, then try other three orientations until one fits
+       If none of four positions fit then get new position and 
+       new orientation and try again
     """   
     count = 4
     fit = False
