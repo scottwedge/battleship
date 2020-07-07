@@ -20,7 +20,7 @@ import random
 from datetime import datetime
 
 
-# Initialize random number generator
+# Initialize random number generator for ship location and orientation
 random.seed(datetime.now())
 
 
@@ -29,16 +29,28 @@ default_x = 10  # X axis (A through J)
 default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
 
 
-def print_column_headings():
-    col = "ABCDEFGHIJ"
+def print_column_headings(width = default_x):
+    """ Print heading for every column in grid
+    Traditionally game is ten columnx wide with letters A through J from left to right
+
+    Parameters:
+    width: number of columns in grid
+    heading: value to be printed
+    Return: nothing
+    """
+    col = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     heading = [0]
-    for j in col:
-        heading.append(j)
+    j = 0
+    while j < width:
+        heading.append(col[j])
+        j = j + 1
     print(heading)
 
 
 def setup_grid():
-    """ Use default values to setup "Classic" game size of 10x10 grid"""
+    """ Create playing grid
+    Default values to setup "Classic" game size of 10x10 grid
+    """
     max_x = default_x
     max_y = default_y
     return (max_x, max_y)
@@ -106,13 +118,13 @@ def does_it_fit(x, y, max_x, max_y, orientation, size):
    fit: True or False     True if fits on grid, otherwise false
    """
     fit = False
-    if orient == 1 and size <= y:
+    if orientation == 1 and size <= y:
         fit = True
-    if orient == 2 and y + size <= max_y:
+    if orientation == 2 and y + size <= max_y:
         fit = True
-    if orient == 3 and size <= max_x:
+    if orientation == 3 and size <= max_x:
         fit = True
-    if orient == 4 and size + x <= max_x:
+    if orientation == 4 and size + x <= max_x:
         fit = True
     return fit
 
