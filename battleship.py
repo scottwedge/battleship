@@ -29,58 +29,99 @@ default_x = 10  # X axis (A through J)
 default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
 
 
-def print_column_headings(width = default_x):
+# Set constants
+MAX_HEADING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+MAX_WIDTH = 26
+
+
+def create_column_headings(width = default_x, max_heading = MAX_HEADING):
     """ Print heading for every column in grid
     Traditionally game is ten columns wide with letters A through J from left to right
 
     Parameters:
     width: number of columns in grid
-    heading: value to be printed
+    max_heading: maximum width string of column heading characters
+    j: counter
 
     Return: 
-    nothing
+    heading: list of characters for each column heading
     """
-    col = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     # top left space filling character is "_"
     heading = ["_"]
     
     j = 0
     while j < width:
-        heading.append(col[j])
+        heading.append(max_heading[j])
         j = j + 1
-    print(heading)
+    return heading
 
 
-def set_grid_size():
+def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
     """ Create playing grid
     Default values to setup "Classic" game size of 10x10 grid
 
     Parameters:
     max_x: width of grid/ number of columns
     max_y: height of grid/ number of rows
+    max_width: set maximum width
 
     Return: 
     (max_x, max_y) tuple of width and height of grid
     """
-    max_x = default_x
-    max_y = default_y
+
+    # Check range of parameters, must be > 0 and < max
+    if max_x > max_width:
+        max_x = max_width
+    if max_y < 0:
+        max_y = default_y
+
     return (max_x, max_y)
 
-def print_empty_grid(max_x, max_y):
-    print_column_headings()
-    y = 1
-    row = []
-    while y <= max_y:
-        r = [y]           # first value in row is row number (1 to max_y)
-        x = 1
-        while x <= max_x:
-            r.append("O")
+
+def create_initial_empty_grid(max_x, max_y):
+    """ Create the initial grid
+        With every row populated with default "0" character
+        Return tuple with size of grid and grid of rows
+
+        Parameters:
+        max_x: width of grid
+        max_y: height of grid
+        x: counter for width
+        y: counter for height
+        row: list of values for every row
+        grid: list of rows
+
+        Return:
+        (max_x, max_y, grid): tuple with grid dimensions and all contents of grid
+    """
+    grid = []
+        
+    grid.append(create_column_headings()) # first/top row of grid is column headings
+
+    y =  1
+    while y <= max_y:     # for every row
+        row = [str(y)]          # initialize empty row with first character is row number
+        x = 0
+        while x < max_x:  
+            row.append("O")  # create row of all default values
             x = x + 1
-        row.append(r)
-        print(row[y])    
+        grid.append(row)
         y = y + 1
-    return row
+    print_grid(x, y, grid)
+    return (x, y, grid)
+
+
+def print_grid(max_x, max_y, grid):
+    """ Print the grid 
+    """
+    x = 0
+    y = 0
+    for y in max_y:
+        print(grid[y])
+        y = y + 1
+
+
 
 def setup_ships():
     """ Use default ship size and numbers to setup "Classic" game size
@@ -190,7 +231,7 @@ def place_ships(max_x, max_y, ships, row):
 
 def main():
     (x, y) = set_grid_size()
-    row = print_empty_grid(x, y)
+    row = create_initial_empty_grid(x, y)
     ships = setup_ships()
     place_ships(x, y, ships, row)
 
