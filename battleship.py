@@ -114,10 +114,20 @@ def create_initial_empty_grid(max_x, max_y):
 
 def print_grid(max_x, max_y, grid):
     """ Print the grid 
+
+        Parameters:
+        max_x: width of grid
+        max_y: height of grid
+        x: counter for width
+        y: counter for height
+        row: list of values for every row
+        grid: list of rows
+
+        Return:
+        (max_x, max_y, grid): tuple with grid dimensions and all contents of grid
     """
-    x = 0
     y = 0
-    for y in max_y:
+    while y < max_y:
         print(grid[y])
         y = y + 1
 
@@ -183,21 +193,21 @@ def does_it_fit(x, y, max_x, max_y, orientation, size):
 
 
 
-def populate_grid(x, y, orient, size, char, row):
+def populate_grid(max_x, max_y, grid, orient, size, char):
     """Change grid points from empty ("0") to char for ship
     """
     while size > 0:
         if orient == 1: # upward 
-            row[y - size][x] = char
+            grid[y - size][x] = char
             size = size - 1
         if orient == 2: # downward
-            row[y + size][x] = char
+            grid[y + size][x] = char
             size = size - 1
         if orient == 3: # left
-            row[y][x - size] = char
+            grid[y][x - size] = char
             size = size - 1
         if orient == 4: # right
-            row[y][x + size] = char
+            grid[y][x + size] = char
             size = size - 1
 
 
@@ -207,7 +217,7 @@ def print_grid(max_x, max_y, row):
         print(r)
 
 
-def place_ships(max_x, max_y, ships, row):
+def place_ships(max_x, max_y, grid, ships):
     """Place ships in order of largest to smallest - seems easiest.
        Generate random number which determines location
     """
@@ -224,7 +234,7 @@ def place_ships(max_x, max_y, ships, row):
             fit = does_it_fit(x, y, max_x, max_y, orient, size)
             print("FIT=",fit, "ORIENT=",orient,"SIZE=", size)
 
-        populate_grid(x, y, orient, size, char, row)
+        populate_grid(x, y, grid, orient, size, char)
 
         print_column_headings()
         print_grid(max_x, max_y, row)
