@@ -37,6 +37,7 @@ MAX_WIDTH = 26
 def create_column_headings(width = default_x, max_heading = MAX_HEADING):
     """ Print heading for every column in grid
     Traditionally game is ten columns wide with letters A through J from left to right
+    Our grid has left-most column containing row number. Its heading is "_".
 
     Parameters:
     width: number of columns in grid
@@ -95,7 +96,7 @@ def create_initial_empty_grid(max_x, max_y):
         Return:
         (max_x, max_y, grid): tuple with grid dimensions and all contents of grid
     """
-    grid = []
+    grid = [] # Initialize game grid
         
     grid.append(create_column_headings()) # first/top row of grid is column headings
 
@@ -106,10 +107,10 @@ def create_initial_empty_grid(max_x, max_y):
         while x < max_x:  
             row.append("O")  # create row of all default values
             x = x + 1
-        grid.append(row)
+        grid.append(row) # Add latest row to grid
         y = y + 1
-    print_grid(x, y, grid)
-    return (x, y, grid)
+    print_grid(max_x, max_y, grid)
+    return (max_x, max_y, grid)
 
 
 def print_grid(max_x, max_y, grid):
@@ -124,10 +125,10 @@ def print_grid(max_x, max_y, grid):
         grid: list of rows
 
         Return:
-        (max_x, max_y, grid): tuple with grid dimensions and all contents of grid
+        nothing
     """
-    y = 0
-    while y < max_y:
+    y = 0               # first row is the column heading
+    while y <= max_y:
         print(grid[y])
         y = y + 1
 
@@ -163,7 +164,7 @@ def generate_random_orientation():
     return orient
 
 
-def does_it_fit(x, y, max_x, max_y, orientation, size):
+def does_ship_fit(x, y, max_x, max_y, orientation, size):
     """ Does ship fit on grid with this orientation at this location?
 
     Parameters:
@@ -220,6 +221,7 @@ def print_grid(max_x, max_y, row):
 def place_ships(max_x, max_y, grid, ships):
     """Place ships in order of largest to smallest - seems easiest.
        Generate random number which determines location
+       Generate random number which determines orientation
     """
     for ship in ships:
         (type, char, size) = ship
@@ -227,11 +229,12 @@ def place_ships(max_x, max_y, grid, ships):
         while not fit:
             (x, y) = generate_random_position(max_x, max_y)
 
-            # choose random orientation for ship (up, down, left, right)
+            # generate random orientation for ship (up, down, left, right)
             orient = generate_random_orientation()
 
             # Does this position and orientation fit on grid?
-            fit = does_it_fit(x, y, max_x, max_y, orient, size)
+            # If not, then generate new position and orientation and try again
+            fit = does_ship_fit(x, y, max_x, max_y, orient, size)
             print("FIT=",fit, "ORIENT=",orient,"SIZE=", size)
 
         populate_grid(x, y, grid, orient, size, char)
@@ -241,7 +244,7 @@ def place_ships(max_x, max_y, grid, ships):
 
 def main():
     (x, y) = set_grid_size()
-    row = create_initial_empty_grid(x, y)
+    (x, y, grid) = create_initial_empty_grid(x, y)
     ships = setup_ships()
     place_ships(x, y, ships, row)
 
