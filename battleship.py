@@ -32,6 +32,7 @@ default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid
 # Set constants
 MAX_HEADING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 MAX_WIDTH = 26
+EMPTY_CHAR = "."
 
 
 def create_column_headings(width = default_x, max_heading = MAX_HEADING):
@@ -80,9 +81,9 @@ def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
     return (max_x, max_y)
 
 
-def create_initial_empty_grid(max_x, max_y):
+def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
     """ Create the initial grid
-        With every row populated with default "0" character
+        With every row populated with default "EMTPTY" character
         Return tuple with size of grid and grid of rows
 
         Parameters:
@@ -105,7 +106,7 @@ def create_initial_empty_grid(max_x, max_y):
         row = [str(y)]          # initialize empty row with first character is row number
         x = 0
         while x < max_x:  
-            row.append("O")  # create row of all default values
+            row.append(empty_char)  # create row of all default values
             x = x + 1
         grid.append(row) # Add latest row to grid
         y = y + 1
@@ -137,17 +138,23 @@ def print_grid(max_x, max_y, grid):
 def setup_ships():
     """ Use default ship size and numbers to setup "Classic" game size
         Create tuple with unique ship type, character to place on grid, number of grid spots
+
+        Parameters:
+        ships: list of tuples in form of (ship type, grid character, number of grids)
+
+        Return:
+        nothing
     """
     ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
             ("submarine", "S", 3), ("destroyer", "D", 2)]
     for ship in ships:
-        (a, b, c) = ship
-        print(a, b, c)
+        (ship_type, ship_char, ship_size) = ship
+        print(ship_type, ship_char, ship_size)
     return ships
 
 
 def generate_random_position(max_x, max_y):
-    num = random.randint(1, max_x * max_y)
+    num = random.randint(1 + max_x, max_x * (max_y + 1))
     x = num % max_x
     y = num // max_x
     print(" ")
@@ -157,19 +164,18 @@ def generate_random_position(max_x, max_y):
 
 def generate_random_orientation():
     """return value of 1 through 4 inclusive
-       where 1 = up, 2 = down, 3 = left, 4 = right
-       if that does not fit then try the next orientation
+       where 1 = upward, 2 = downward, 3 = leftward, 4 = rightward
     """
-    orient = random.randint(1,4)
-    return orient
+    orientation = random.randint(1,4)
+    return orientation
 
 
-def does_ship_fit(x, y, max_x, max_y, orientation, size):
+def does_ship_fit(max_x, max_y, x, y, orientation, size):
     """ Does ship fit on grid with this orientation at this location?
 
     Parameters:
-    x: horizontal axis, value between 0 and max_x, left-most position = 0
-    y: vertical axis, value between 0 and max_y, top-most position = 0
+    x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
+    y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
     max_x: maximum row width
     max_y: maximum column height
     orientation: 
@@ -182,19 +188,19 @@ def does_ship_fit(x, y, max_x, max_y, orientation, size):
    fit: True or False     True if fits on grid, otherwise false
    """
     fit = False
-    if orientation == 1 and size <= y:
+    if orientation == 1 and size < y:
         fit = True
-    if orientation == 2 and y + size <= max_y:
+    if orientation == 2 and y + size < max_y:
         fit = True
-    if orientation == 3 and size <= max_x:
+    if orientation == 3 and size < x:
         fit = True
-    if orientation == 4 and size + x <= max_x:
+    if orientation == 4 and size + x < max_x:
         fit = True
     return fit
 
 
 
-def populate_grid(max_x, max_y, grid, orient, size, char):
+def populate_grid(max_x, max_y, grid, x, y, orient, size, char):
     """Change grid points from empty ("0") to char for ship
     """
     while size > 0:
@@ -234,19 +240,19 @@ def place_ships(max_x, max_y, grid, ships):
 
             # Does this position and orientation fit on grid?
             # If not, then generate new position and orientation and try again
-            fit = does_ship_fit(x, y, max_x, max_y, orient, size)
+            fit = does_ship_fit(max_x, max_y, x, y, orient, size)
             print("FIT=",fit, "ORIENT=",orient,"SIZE=", size)
 
-        populate_grid(x, y, grid, orient, size, char)
+        populate_grid(max_x, max_y, grid, x, y, orient, size, char)
 
-        print_column_headings()
-        print_grid(max_x, max_y, row)
+        #print_column_headings()
+        print_grid(max_x, max_y, grid)
 
 def main():
-    (x, y) = set_grid_size()
-    (x, y, grid) = create_initial_empty_grid(x, y)
+    (max_x, max_y) = set_grid_size()
+    (max_x, max_y, grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
-    place_ships(x, y, ships, row)
+    place_ships(max_x, max_y, grid, ships)
 
 
 if __name__ == "__main__":
