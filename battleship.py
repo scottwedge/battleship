@@ -140,7 +140,7 @@ def setup_ships():
         Create tuple with unique ship type, character to place on grid, number of grid spots
 
         Parameters:
-        ships: list of tuples in form of (ship type, grid character, number of grids)
+        ships: list of tuples in form of (ship type, grid character, number of grid spots)
 
         Return:
         nothing
@@ -154,6 +154,21 @@ def setup_ships():
 
 
 def generate_random_position(max_x, max_y):
+    """ Return random number
+        Top row is reserved for column headings so range does not start with 1
+        First column is reserved for row numbers
+
+        Parameters:
+        max_x: width of grid
+        max_y: height of grid
+        num: random number
+        x: modulo remainder of random number divided by width of grid
+        y: floor of random number divided by width of grid
+
+        Return:
+        (x, y): tuple with random x, y co-ordinates
+    """
+
     num = random.randint(1 + max_x, max_x * (max_y + 1))
     x = num % max_x
     y = num // max_x
@@ -165,6 +180,16 @@ def generate_random_position(max_x, max_y):
 def generate_random_orientation():
     """return value of 1 through 4 inclusive
        where 1 = upward, 2 = downward, 3 = leftward, 4 = rightward
+
+       Parameters:
+       nothing passed in
+
+       Return: 
+       orientation: integer between 1 and 4 inclusive where
+            1 = upward orientation
+            2 = downward
+            3 = leftward
+            4 = rightward
     """
     orientation = random.randint(1,4)
     return orientation
