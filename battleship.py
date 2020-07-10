@@ -162,16 +162,18 @@ def generate_random_position(max_x, max_y):
         max_x: width of grid
         max_y: height of grid
         num: random number
-        x: modulo remainder of random number divided by width of grid
-        y: floor of random number divided by width of grid
+        x: modulo remainder of random number divided by width of grid + 1;
+           so num=10 becomes x=1 aka "A" and y= 1
+        y: floor of random number divided by width of grid;
+           so num=109 becomes x=10 aka "J"  and y = 10
 
         Return:
         (x, y): tuple with random x, y co-ordinates
     """
 
-    #num = random.randint(1 + max_x, max_x * (max_y + 1))
-    num = random.randint(max_x + 1, max_x * (max_y + 1) + 1)
-    x = num % max_x 
+    num = random.randint(max_x * 10, max_x * (max_y + 1) - 1)
+    #num = random.randint(max_x + 1, max_x * (max_y + 1) + 1)
+    x = num % max_x  + 1
     y = num // max_x
     print(" ")
     print(num, "translates to x=", x, "and y=", y)
@@ -193,10 +195,11 @@ def generate_random_orientation():
             4 = rightward
     """
     orientation = random.randint(1,4)
-    return orientation
+    #return orientation
+    return 1
 
 
-def ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
     """ Does ship overlap with an existing ship on the grid?
 
     Parameters:
@@ -216,29 +219,36 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size):
     """
     
     ship_overlap = False
-    while size > 0:
-        if orientation == 1: # upward 
+    if orientation == 1: # upward 
+        while size > 0:
             if grid[y - size][x] != EMPTY_CHAR:
                 ship_overlap = True
-                size = size - 1
-        elif orientation == 2: # downward
+                break
+            size = size - 1
+    elif orientation == 2: # downward
+        while size > 0:
             if grid[y + size][x] != EMPTY_CHAR:
                 ship_overlap = True
-                size = size - 1
-        elif orientation == 3: # left
+                break
+            size = size - 1
+    elif orientation == 3: # left
+        while size > 0:
             if grid[y][x - size] != EMPTY_CHAR:
                 ship_overlap = True
-                size = size - 1
-        elif orientation == 4: # right
+                break
+            size = size - 1
+    else: # (orientation == 4:) # right
+        while size > 0:
             if grid[y][x + size] != EMPTY_CHAR:
                 ship_overlap = True
-                size = size - 1
+                break
+            size = size - 1
 
-    print(ship_overlap)
+    # print(ship_overlap)
     return ship_overlap
 
 
-def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
+def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
     """ Does ship fit on grid with this orientation at this location?
 
     Parameters:
@@ -257,13 +267,13 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
    ship_fit: True or False     True if fits on grid, otherwise false
    """
     ship_fit = False
-    if orientation == 1 and size < y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    if orientation == 1 and size < y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
     return ship_fit
 
@@ -319,7 +329,7 @@ def place_ships(max_x, max_y, grid, ships):
 
             # Does this position and orientation fit on grid without overlapping another ship
             # If not, then generate new position and orientation and try again
-            fit = does_ship_fit(max_x, max_y, grid, x, y, orientation, size)
+            fit = does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR)
             print("FIT=",fit, "ORIENT=",orientation, "SIZE=", size, "CHAR=", char)
 
         populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
