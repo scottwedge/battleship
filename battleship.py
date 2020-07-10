@@ -169,8 +169,9 @@ def generate_random_position(max_x, max_y):
         (x, y): tuple with random x, y co-ordinates
     """
 
-    num = random.randint(1 + max_x, max_x * (max_y + 1))
-    x = num % max_x
+    #num = random.randint(1 + max_x, max_x * (max_y + 1))
+    num = random.randint(max_x + 1, max_x * (max_y + 1) + 1)
+    x = num % max_x 
     y = num // max_x
     print(" ")
     print(num, "translates to x=", x, "and y=", y)
@@ -195,7 +196,7 @@ def generate_random_orientation():
     return orientation
 
 
-def does_ship_fit(max_x, max_y, x, y, orientation, size):
+def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
     """ Does ship fit on grid with this orientation at this location?
 
     Parameters:
@@ -224,7 +225,6 @@ def does_ship_fit(max_x, max_y, x, y, orientation, size):
     return fit
 
 
-
 def populate_grid(max_x, max_y, grid, x, y, orient, size, char):
     """Change grid points from empty ("0") to char for ship
     """
@@ -243,10 +243,21 @@ def populate_grid(max_x, max_y, grid, x, y, orient, size, char):
             size = size - 1
 
 
-def print_grid(max_x, max_y, row):
-    """ Print all rows now that they are populated"""
-    for r in row:
-        print(r)
+def print_grid(max_x, max_y, grid):
+    """ Print all rows
+
+    Parameters:
+        max_x: width of grid
+        max_y: height of grid
+        grid: list of rows
+        row: counter
+
+    Return:
+        nothing
+    """
+
+    for row in grid:
+        print(row)
 
 
 def place_ships(max_x, max_y, grid, ships):
@@ -263,15 +274,15 @@ def place_ships(max_x, max_y, grid, ships):
             # generate random orientation for ship (up, down, left, right)
             orient = generate_random_orientation()
 
-            # Does this position and orientation fit on grid?
+            # Does this position and orientation fit on grid without overlapping another ship
             # If not, then generate new position and orientation and try again
-            fit = does_ship_fit(max_x, max_y, x, y, orient, size)
-            print("FIT=",fit, "ORIENT=",orient,"SIZE=", size)
+            fit = does_ship_fit(max_x, max_y, grid, x, y, orient, size)
+            print("FIT=",fit, "ORIENT=",orient,"SIZE=", size, "CHAR=", char)
 
         populate_grid(max_x, max_y, grid, x, y, orient, size, char)
 
-        #print_column_headings()
-        print_grid(max_x, max_y, grid)
+    # All ships placed so print grid now
+    print_grid(max_x, max_y, grid)
 
 def main():
     (max_x, max_y) = set_grid_size()
