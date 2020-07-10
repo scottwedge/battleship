@@ -171,11 +171,11 @@ def generate_random_position(max_x, max_y):
         (x, y): tuple with random x, y co-ordinates
     """
 
-    num = random.randint(max_x * 10, max_x * (max_y + 1) - 1)
+    num = random.randint(max_x, max_x * (max_y + 1) - 1)
     #num = random.randint(max_x + 1, max_x * (max_y + 1) + 1)
     x = num % max_x  + 1
     y = num // max_x
-    print(" ")
+    #print(" ")
     print(num, "translates to x=", x, "and y=", y)
     return (x, y)
 
@@ -195,8 +195,7 @@ def generate_random_orientation():
             4 = rightward
     """
     orientation = random.randint(1,4)
-    #return orientation
-    return 1
+    return orientation
 
 
 def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
@@ -221,25 +220,25 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
     ship_overlap = False
     if orientation == 1: # upward 
         while size > 0:
-            if grid[y - size][x] != EMPTY_CHAR:
+            if grid[y - size + 1][x] != EMPTY_CHAR:
                 ship_overlap = True
                 break
             size = size - 1
     elif orientation == 2: # downward
         while size > 0:
-            if grid[y + size][x] != EMPTY_CHAR:
+            if grid[y + size - 1][x] != EMPTY_CHAR:
                 ship_overlap = True
                 break
             size = size - 1
     elif orientation == 3: # left
         while size > 0:
-            if grid[y][x - size] != EMPTY_CHAR:
+            if grid[y][x - size + 1] != EMPTY_CHAR:
                 ship_overlap = True
                 break
             size = size - 1
     else: # (orientation == 4:) # right
         while size > 0:
-            if grid[y][x + size] != EMPTY_CHAR:
+            if grid[y][x + size - 1] != EMPTY_CHAR:
                 ship_overlap = True
                 break
             size = size - 1
@@ -283,16 +282,16 @@ def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
     """
     while size > 0:
         if orientation == 1: # upward 
-            grid[y - size][x] = char
+            grid[y - size + 1][x] = char
             size = size - 1
         if orientation == 2: # downward
-            grid[y + size][x] = char
+            grid[y + size - 1][x] = char
             size = size - 1
         if orientation == 3: # left
-            grid[y][x - size] = char
+            grid[y][x - size + 1] = char
             size = size - 1
         if orientation == 4: # right
-            grid[y][x + size] = char
+            grid[y][x + size - 1] = char
             size = size - 1
 
 
@@ -329,8 +328,11 @@ def place_ships(max_x, max_y, grid, ships):
 
             # Does this position and orientation fit on grid without overlapping another ship
             # If not, then generate new position and orientation and try again
+            
             fit = does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR)
-            print("FIT=",fit, "ORIENT=",orientation, "SIZE=", size, "CHAR=", char)
+
+            if fit:
+                print("FIT=",fit, "ORIENT=",orientation, "SIZE=", size, "CHAR=", char)
 
         populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
 
