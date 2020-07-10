@@ -145,12 +145,16 @@ def setup_ships():
         Return:
         nothing
     """
-    ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-            ("submarine", "S", 3), ("destroyer", "D", 2)]
-    for ship in ships:
+    #ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+    #        ("submarine", "S", 3), ("destroyer", "D", 2)]
+    double_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                    ("submarine", "S", 3), ("destroyer", "D", 2), \
+                    ("submarine", "s", 3), ("destroyer", "d", 2)]
+    for ship in double_ships:
         (ship_type, ship_char, ship_size) = ship
         print(ship_type, ship_char, ship_size)
-    return ships
+    return double_ships
 
 
 def generate_random_position(max_x, max_y):
