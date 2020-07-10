@@ -147,16 +147,18 @@ def setup_ships():
     """
     #ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
     #        ("submarine", "S", 3), ("destroyer", "D", 2)]
-    triple_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+    quadruple_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                    ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                     ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                    ("aircraft carrier", "x", 5), ("battleship","y", 4), ("cruiser", "z", 3), \
+                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
                     ("submarine", "S", 3), ("destroyer", "D", 2), \
-                    ("submarine", "u", 3), ("destroyer", "v", 2), \
+                    ("submarine", "S", 3), ("destroyer", "D", 2), \
+                    ("submarine", "s", 3), ("destroyer", "d", 2), \
                     ("submarine", "s", 3), ("destroyer", "d", 2)]
-    for ship in triple_ships:
+    for ship in quadruple_ships:
         (ship_type, ship_char, ship_size) = ship
         print(ship_type, ship_char, ship_size)
-    return triple_ships
+    return quadruple_ships
 
 
 def generate_random_position(max_x, max_y):
@@ -182,7 +184,7 @@ def generate_random_position(max_x, max_y):
     x = num % max_x  + 1
     y = num // max_x
     #print(" ")
-    print(num, "translates to x=", x, "and y=", y)
+    #print(num, "translates to x=", x, "and y=", y)
     return (x, y)
 
 
