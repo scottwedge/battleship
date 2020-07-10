@@ -196,49 +196,90 @@ def generate_random_orientation():
     return orientation
 
 
-def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
+def ship_overlap(max_x, max_y, grid, x, y, orientation, size):
     """ Does ship fit on grid with this orientation at this location?
 
     Parameters:
-    x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
-    y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
     max_x: maximum row width
     max_y: maximum column height
+    x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
+    y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
     orientation: 
         Where = 1 is upwards aka "north" from random point (x,y)
         Where = 2 is downwards aka "south" from random point
         Where = 3 is leftward aka "west" from random point
         Where = 4 is rightward aka "east" from random point.
+    size: number of grid spots for ship size
+
+    Return:
+    ship_overlap: True if grid spot already taken
+    """
+    
+    ship_overlap = False
+    while size > 0:
+        if orientation == 1: # upward 
+            if grid[y - size][x] != EMPTY_CHAR:
+                ship_overlap = True
+                size = size - 1
+        if orientation == 2: # downward
+            if grid[y + size][x] != EMPTY_CHAR:
+                ship_overlap = True
+                size = size - 1
+        if orientation == 3: # left
+            if grid[y][x - size] != EMPTY_CHAR:
+                ship_overlap = True
+                size = size - 1
+        if orientation == 4: # right
+            if grid[y][x + size] != EMPTY_CHAR:
+                ship_overlap = True
+                size = size - 1
+    return ship_overlap
+
+
+def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
+    """ Does ship fit on grid with this orientation at this location?
+
+    Parameters:
+    max_x: maximum row width
+    max_y: maximum column height
+    x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
+    y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
+    orientation: 
+        Where = 1 is upwards aka "north" from random point (x,y)
+        Where = 2 is downwards aka "south" from random point
+        Where = 3 is leftward aka "west" from random point
+        Where = 4 is rightward aka "east" from random point.
+    size: number of grid spots for ship size
 
    Return:
-   fit: True or False     True if fits on grid, otherwise false
+   ship_fit: True or False     True if fits on grid, otherwise false
    """
-    fit = False
-    if orientation == 1 and size < y:
-        fit = True
-    if orientation == 2 and y + size < max_y:
-        fit = True
-    if orientation == 3 and size < x:
-        fit = True
-    if orientation == 4 and size + x < max_x:
-        fit = True
-    return fit
+    ship_fit = False
+    if orientation == 1 and size < y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+        ship_fit = True
+    if orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+        ship_fit = True
+    if orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+        ship_fit = True
+    if orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+        ship_fit = True
+    return ship_fit
 
 
-def populate_grid(max_x, max_y, grid, x, y, orient, size, char):
+def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
     """Change grid points from empty ("0") to char for ship
     """
     while size > 0:
-        if orient == 1: # upward 
+        if orientation == 1: # upward 
             grid[y - size][x] = char
             size = size - 1
-        if orient == 2: # downward
+        if orientation == 2: # downward
             grid[y + size][x] = char
             size = size - 1
-        if orient == 3: # left
+        if orientation == 3: # left
             grid[y][x - size] = char
             size = size - 1
-        if orient == 4: # right
+        if orientation == 4: # right
             grid[y][x + size] = char
             size = size - 1
 
@@ -272,14 +313,14 @@ def place_ships(max_x, max_y, grid, ships):
             (x, y) = generate_random_position(max_x, max_y)
 
             # generate random orientation for ship (up, down, left, right)
-            orient = generate_random_orientation()
+            orientation = generate_random_orientation()
 
             # Does this position and orientation fit on grid without overlapping another ship
             # If not, then generate new position and orientation and try again
-            fit = does_ship_fit(max_x, max_y, grid, x, y, orient, size)
-            print("FIT=",fit, "ORIENT=",orient,"SIZE=", size, "CHAR=", char)
+            fit = does_ship_fit(max_x, max_y, grid, x, y, orientation, size)
+            print("FIT=",fit, "ORIENT=",orientation, "SIZE=", size, "CHAR=", char)
 
-        populate_grid(max_x, max_y, grid, x, y, orient, size, char)
+        populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
 
     # All ships placed so print grid now
     print_grid(max_x, max_y, grid)
