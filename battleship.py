@@ -197,7 +197,7 @@ def generate_random_orientation():
 
 
 def ship_overlap(max_x, max_y, grid, x, y, orientation, size):
-    """ Does ship fit on grid with this orientation at this location?
+    """ Does ship overlap with an existing ship on the grid?
 
     Parameters:
     max_x: maximum row width
@@ -221,18 +221,20 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size):
             if grid[y - size][x] != EMPTY_CHAR:
                 ship_overlap = True
                 size = size - 1
-        if orientation == 2: # downward
+        elif orientation == 2: # downward
             if grid[y + size][x] != EMPTY_CHAR:
                 ship_overlap = True
                 size = size - 1
-        if orientation == 3: # left
+        elif orientation == 3: # left
             if grid[y][x - size] != EMPTY_CHAR:
                 ship_overlap = True
                 size = size - 1
-        if orientation == 4: # right
+        elif orientation == 4: # right
             if grid[y][x + size] != EMPTY_CHAR:
                 ship_overlap = True
                 size = size - 1
+
+    print(ship_overlap)
     return ship_overlap
 
 
@@ -257,11 +259,11 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size):
     ship_fit = False
     if orientation == 1 and size < y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
         ship_fit = True
-    if orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
         ship_fit = True
-    if orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
         ship_fit = True
-    if orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
+    elif orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size):
         ship_fit = True
     return ship_fit
 
