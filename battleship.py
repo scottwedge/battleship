@@ -50,7 +50,8 @@ def create_column_headings(width = default_x, max_heading = MAX_HEADING):
     """
 
     # top left space filling character is "_"
-    heading = ["_"]
+    # heading = ["_"]
+    heading = ["__"] # Need two characters wide to handle row "10"
     
     j = 0
     while j < width:
@@ -103,7 +104,7 @@ def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
 
     y =  1
     while y <= max_y:     # for every row
-        row = [str(y)]          # initialize empty row with first character is row number
+        row = [(f"{y:02d}")]    # initialize empty row with first character as row number, must be two characters wide
         x = 0
         while x < max_x:  
             row.append(empty_char)  # create row of all default values
