@@ -353,9 +353,6 @@ def place_ships(max_x, max_y, grid, ships):
             
             fit = does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR)
 
-            if fit:
-                print("FIT=",fit, "ORIENT=",orientation, "SIZE=", size, "CHAR=", char)
-
         populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
 
     # All ships placed so print grid now
