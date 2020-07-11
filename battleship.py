@@ -33,6 +33,7 @@ default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid
 MAX_HEADING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 MAX_WIDTH = 26
 EMPTY_CHAR = "."
+NO_SHOT_CHAR = " "
 
 
 def create_column_headings(width = default_x, max_heading = MAX_HEADING):
@@ -360,10 +361,11 @@ def place_ships(max_x, max_y, grid, ships):
 
 def main():
     (max_x, max_y) = set_grid_size()
-    (max_x, max_y, grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
+    (max_x, max_y, ship_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
-    place_ships(max_x, max_y, grid, ships)
-
+    place_ships(max_x, max_y, ship_grid, ships)
+    (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
+    #print_grid(max_x, max_y, shot_grid)
 
 if __name__ == "__main__":
     main()
