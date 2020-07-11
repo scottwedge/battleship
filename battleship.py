@@ -145,8 +145,17 @@ def setup_ships():
         Return:
         nothing
     """
-    #ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-    #        ("submarine", "S", 3), ("destroyer", "D", 2)]
+    ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+            ("submarine", "S", 3), ("destroyer", "D", 2)]
+
+    """ Comment out other possible ship combinations
+    double_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                    ("submarine", "S", 3), ("destroyer", "D", 2), \
+                    ("submarine", "s", 3), ("destroyer", "d", 2)]
+
+    ships = double_ships
+
     quadruple_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                     ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                     ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
@@ -155,10 +164,14 @@ def setup_ships():
                     ("submarine", "S", 3), ("destroyer", "D", 2), \
                     ("submarine", "s", 3), ("destroyer", "d", 2), \
                     ("submarine", "s", 3), ("destroyer", "d", 2)]
-    for ship in quadruple_ships:
+
+    ships = double_ships
+    """
+
+    for ship in ships:
         (ship_type, ship_char, ship_size) = ship
         print(ship_type, ship_char, ship_size)
-    return quadruple_ships
+    return ships
 
 
 def generate_random_position(max_x, max_y):
