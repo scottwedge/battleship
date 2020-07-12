@@ -91,6 +91,7 @@ def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
         Parameters:
         max_x: width of grid
         max_y: height of grid
+        empty_char: default character for all points in grid
         x: counter for width
         y: counter for height
         row: list of values for every row
@@ -143,9 +144,10 @@ def setup_ships():
 
         Parameters:
         ships: list of tuples in form of (ship type, grid character, number of grid spots)
+        ship: counter for ships
 
         Return:
-        nothing
+        ships
     """
     ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
             ("submarine", "S", 3), ("destroyer", "D", 2)]
@@ -227,6 +229,7 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
     Parameters:
     max_x: maximum row width
     max_y: maximum column height
+    grid: list of rows 
     x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
     y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
     orientation: 
@@ -235,9 +238,10 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         Where = 3 is leftward aka "west" from random point
         Where = 4 is rightward aka "east" from random point.
     size: number of grid spots for ship size
+    EMPTY_CHAR: default character to be used for empty space
 
     Return:
-    ship_overlap: True if grid spot already taken
+    ship_overlap: boolean; True if grid spot already taken
     """
     
     ship_overlap = False
