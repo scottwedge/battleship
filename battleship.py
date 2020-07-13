@@ -10,6 +10,8 @@
     30. Place ships (random or deliberately).
     40. Display setup.
     100. Start game.
+    120. Random shots
+    140. Display shots
     200. Start displaying statistics.
     300. Update display with every shot.
     1000. Add ability to: save game mid-session,
@@ -363,6 +365,25 @@ def place_ships(max_x, max_y, grid, ships):
     # All ships placed so print grid now
     print_grid(max_x, max_y, grid)
 
+
+def take_shots(max_x, max_y, ship_grid, shot_grid):
+    """Take shots and track results on shot_grid.
+       If shot hits then get another free shot.
+       Concentrate on damaged ship or keep shooting randomly?
+
+       Parameters:
+       max_x: width of grid
+       max_y: height of grid
+       ship_grid: grid with placed ships
+       shot_grid: grid tracking shots and results (miss or hit)
+    """
+    game_over = False
+
+    while not game_over:
+        take_shot()
+        record_hit_or_miss()
+        update_displayed_results()
+
 def main():
     (max_x, max_y) = set_grid_size()
     (max_x, max_y, ship_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
@@ -370,6 +391,7 @@ def main():
     place_ships(max_x, max_y, ship_grid, ships)
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
     #print_grid(max_x, max_y, shot_grid)
+    take_shots
 
 if __name__ == "__main__":
     main()
