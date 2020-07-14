@@ -282,6 +282,7 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
     Parameters:
     max_x: maximum row width
     max_y: maximum column height
+    grid: list of rows 
     x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
     y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
     orientation: 
@@ -308,6 +309,25 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
 
 def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
     """Change grid points from empty ("0") to char for ship
+
+    Parameters:
+    max_x: maximum row width
+    max_y: maximum column height
+    grid: list of rows
+    x: horizontal axis, left-most ship position is 1 since first column (x = 0) is row number
+    y: vertical axis, top-most possible ship value is 1, top-most y=0 is column heading
+    orientation: 
+        Where = 1 is upwards aka "north" from random point (x,y)
+        Where = 2 is downwards aka "south" from random point
+        Where = 3 is leftward aka "west" from random point
+        Where = 4 is rightward aka "east" from random point.
+    size: number of grid spots for ship size
+    char: default character
+
+   Return:
+   ship_fit: True or False     True if fits on grid, otherwise false
+   """
+    ship_fit = False
     """
     while size > 0:
         if orientation == 1: # upward 
