@@ -328,7 +328,6 @@ def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
    ship_fit: True or False     True if fits on grid, otherwise false
    """
     ship_fit = False
-    """
     while size > 0:
         if orientation == 1: # upward 
             grid[y - size + 1][x] = char
@@ -396,6 +395,7 @@ def take_shots(max_x, max_y, ship_grid, shot_grid):
        max_y: height of grid
        ship_grid: grid with placed ships
        shot_grid: grid tracking shots and results (miss or hit)
+       game_over: boolean
     """
     game_over = False
 
