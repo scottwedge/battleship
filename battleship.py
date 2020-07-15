@@ -115,7 +115,7 @@ def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
             x = x + 1
         grid.append(row) # Add latest row to grid
         y = y + 1
-    print_grid(max_x, max_y, grid)
+    #print_grid(max_x, max_y, grid)
     return (max_x, max_y, grid)
 
 
@@ -382,7 +382,7 @@ def place_ships(max_x, max_y, grid, ships):
         populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
 
     # All ships placed so print grid now
-    print_grid(max_x, max_y, grid)
+    #print_grid(max_x, max_y, grid)
 
 
 def take_shots(max_x, max_y, ship_grid, shot_grid):
@@ -409,8 +409,9 @@ def main():
     (max_x, max_y, ship_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
     place_ships(max_x, max_y, ship_grid, ships)
+    print_grid(max_x, max_y, ship_grid)
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
-    #print_grid(max_x, max_y, shot_grid)
+    print_grid(max_x, max_y, shot_grid)
     take_shots
 
 if __name__ == "__main__":
