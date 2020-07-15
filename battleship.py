@@ -73,7 +73,7 @@ def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
     max_width: set maximum width
 
     Return: 
-    (max_x, max_y) tuple of width and height of grid
+    (max_x, max_y): tuple of width and height of grid
     """
 
     # Check range of parameters, must be > 0 and < max
@@ -87,7 +87,7 @@ def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
 
 def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
     """ Create the initial grid
-        With every row populated with default "EMTPTY" character
+        With every row populated with default "EMPTY" character
         Return tuple with size of grid and grid of rows
 
         Parameters:
@@ -325,7 +325,7 @@ def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
     char: default character
 
    Return:
-   ship_fit: True or False     True if fits on grid, otherwise false
+   grid: grid that now contains latest placed ship
    """
     ship_fit = False
     while size > 0:
@@ -341,6 +341,7 @@ def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
         if orientation == 4: # right
             grid[y][x + size - 1] = char
             size = size - 1
+    return grid
 
 
 def print_grid(max_x, max_y, grid):
@@ -364,7 +365,25 @@ def place_ships(max_x, max_y, grid, ships):
     """Place ships in order of largest to smallest - seems easiest.
        Generate random number which determines location
        Generate random number which determines orientation
+
+    Parameters:
+        max_x: width of grid
+        max_y: height of grid
+        grid: list of rows
+        ships: tuple of (ship type, ship character, ship size)
+        ship: counter for ships
+        fit: boolean
+        (x, y): tuple of random position
+        orientation: 
+            Where = 1 is upwards aka "north" from random point (x,y)
+            Where = 2 is downwards aka "south" from random point
+            Where = 3 is leftward aka "west" from random point
+            Where = 4 is rightward aka "east" from random point.
+
+    Return:
+        grid
     """
+
     for ship in ships:
         (type, char, size) = ship
         fit = False
@@ -382,7 +401,8 @@ def place_ships(max_x, max_y, grid, ships):
         populate_grid(max_x, max_y, grid, x, y, orientation, size, char)
 
     # All ships placed so print grid now
-    #print_grid(max_x, max_y, grid)
+    # print_grid(max_x, max_y, grid)
+    return grid
 
 
 def take_shots(max_x, max_y, ship_grid, shot_grid):
@@ -406,9 +426,9 @@ def take_shots(max_x, max_y, ship_grid, shot_grid):
 
 def main():
     (max_x, max_y) = set_grid_size()
-    (max_x, max_y, ship_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
+    (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
-    place_ships(max_x, max_y, ship_grid, ships)
+    ship_grid = place_ships(max_x, max_y, empty_grid, ships)
     print_grid(max_x, max_y, ship_grid)
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
     print_grid(max_x, max_y, shot_grid)
