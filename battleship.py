@@ -308,7 +308,7 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
 
 
 def populate_grid(max_x, max_y, grid, x, y, orientation, size, char):
-    """Change grid points from empty ("0") to char for ship
+    """Change grid points from empty char to character for ship type
 
     Parameters:
     max_x: maximum row width
@@ -405,7 +405,7 @@ def place_ships(max_x, max_y, grid, ships):
     return grid
 
 
-def take_shots(max_x, max_y, ship_grid, shot_grid):
+def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern = "top_left_to_bottom_right"):
     """Take shots and track results on shot_grid.
        If shot hits then get another free shot.
        Concentrate on damaged ship or keep shooting randomly?
@@ -415,6 +415,13 @@ def take_shots(max_x, max_y, ship_grid, shot_grid):
        max_y: height of grid
        ship_grid: grid with placed ships
        shot_grid: grid tracking shots and results (miss or hit)
+       shot_pattern: how shots are determined
+           Possible values are: 
+               "top_left_to_bottom_right": first shot is top left and last shot is bottom right
+               "random": shots selected randomly
+               "random-even": sum of row number and column number add to even number
+               "random-odd": sum of row number and column number add to odd number
+               "manual": manually selected by player
        game_over: boolean
     """
     game_over = False
@@ -425,6 +432,7 @@ def take_shots(max_x, max_y, ship_grid, shot_grid):
         update_displayed_results()
 
 def main():
+    # Set grid size and place ships on grid
     (max_x, max_y) = set_grid_size()
     (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
@@ -432,7 +440,10 @@ def main():
     print_grid(max_x, max_y, ship_grid)
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
     print_grid(max_x, max_y, shot_grid)
-    take_shots
+
+    # Start playing game - first iteration has computer taking single shots starting in top left
+    # and finishing in bottom right spot
+    play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern)
 
 if __name__ == "__main__":
     main()
