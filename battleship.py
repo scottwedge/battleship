@@ -19,6 +19,7 @@
 
 # Import statements
 import random
+import time # needed for delay in loops to analyze printed output
 from datetime import datetime
 
 
@@ -36,6 +37,7 @@ MAX_HEADING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 MAX_WIDTH = 26
 EMPTY_CHAR = "."
 NO_SHOT_CHAR = " "
+MISS_CHAR = "X"  
 
 
 def create_column_headings(width = default_x, max_heading = MAX_HEADING):
@@ -199,11 +201,8 @@ def generate_random_position(max_x, max_y):
     """
 
     num = random.randint(max_x, max_x * (max_y + 1) - 1)
-    #num = random.randint(max_x + 1, max_x * (max_y + 1) + 1)
     x = num % max_x  + 1
     y = num // max_x
-    #print(" ")
-    #print(num, "translates to x=", x, "and y=", y)
     return (x, y)
 
 
@@ -272,7 +271,6 @@ def ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
                 break
             size = size - 1
 
-    # print(ship_overlap)
     return ship_overlap
 
 
@@ -405,8 +403,76 @@ def place_ships(max_x, max_y, grid, ships):
     return grid
 
 
+def find_available_spot(max_x, max_y, shot_grid):
+    """Find location on grid to shoot
+       Return that grid location
+
+       Parameters:
+       max_x:
+       max_y:
+       shot_grid: 
+
+       Return:
+       (x, y): shot location
+    """
+    game_over = False
+
+    last_spot =  max_x * (max_y + 1) - 1
+    spot = max_x 
+    
+    while spot <= last_spot:
+        x = spot % max_x + 1
+        y = spot // max_x 
+        
+        if x == max_x and y == max_y:
+            game_over = True
+
+        if shot_grid[y][x] == NO_SHOT_CHAR:
+            break  # this is empty spot so return this value
+        else:
+            spot = spot + 1
+            #print(shot_grid[y][x], x, y)
+
+    return (x, y, game_over)
+
+
+def choose_shot(max_x, max_y, shot_grid, shot_pattern):
+    """Select location on grid to shoot
+       Return that grid location
+
+       Parameters:
+       max_x:
+       max_y:
+       shot_grid: 
+       shot_pattern: 
+
+       Return:
+       (x, y, game_over) = location of shot and boolean game over
+    """
+    x = 2
+    y = 2
+
+    if shot_pattern == "top_left_to_bottom_right":
+        (x, y, game_over) = find_available_spot(max_x, max_y, shot_grid)
+    else:
+        print(shot_pattern)
+        (x, y) = generate_random_position(max_x, max_y)
+        #x = 5
+        #y = 5
+
+    return (x, y, game_over)
+
+
+def determine_hit_or_miss(x, y, ship_grid, shot_grid):
+    if ship_grid[y][x] == EMPTY_CHAR:
+        hit = False  # miss
+    else:
+        hit = True
+    return hit
+
+
 def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern = "top_left_to_bottom_right"):
-    """Take shots and track results on shot_grid.
+    """Generate shot location and track results on shot_grid.
        If shot hits then get another free shot.
        Concentrate on damaged ship or keep shooting randomly?
 
@@ -422,14 +488,24 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern = "top_left_to_bo
                "random-even": sum of row number and column number add to even number
                "random-odd": sum of row number and column number add to odd number
                "manual": manually selected by player
+
+       Return:
        game_over: boolean
     """
-    game_over = False
 
-    while not game_over:
-        take_shot()
-        record_hit_or_miss()
-        update_displayed_results()
+    (x, y, game_over) = choose_shot(max_x, max_y, shot_grid, shot_pattern)
+    #print(x,y)
+    hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
+    if hit:
+        shot_grid[y][x] = ship_grid[y][x] #update shot grid to show hit ship character
+    else:
+        shot_grid[y][x] = MISS_CHAR #update shot grid to show a miss
+
+    #print_grid(max_x, max_y, shot_grid)
+
+    return game_over
+
+
 
 def main():
     # Set grid size and place ships on grid
@@ -443,7 +519,15 @@ def main():
 
     # Start playing game - first iteration has computer taking single shots starting in top left
     # and finishing in bottom right spot
-    play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern)
+    shot_pattern = "top_left_to_bottom_right"
+
+    game_over = False
+    while not game_over:
+        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern)
+
+    print_grid(max_x, max_y, shot_grid)
+
+    print("GAME OVER")
 
 if __name__ == "__main__":
     main()
