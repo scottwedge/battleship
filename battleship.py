@@ -30,6 +30,7 @@ random.seed(datetime.now())
 # Set default values
 default_x = 10  # X axis (A through J)
 default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
+random_count = 1 # initial counter if shot generation is random
 
 
 # Set constants
@@ -436,7 +437,25 @@ def find_available_spot(max_x, max_y, shot_grid):
     return (x, y, game_over)
 
 
-def choose_shot(max_x, max_y, shot_grid, shot_pattern):
+def find_random_spot(max_x, max_y, shot_grid, random_count):
+    game_over = False
+
+    if random_count >= max_x * max_y:
+        game_over = True
+
+    valid_choice = False
+
+    while not valid_choice:
+        (x, y) = generate_random_position(max_x, max_y)
+     
+        if shot_grid[y][x] == NO_SHOT_CHAR:
+            valid_choice = True
+
+    random_count = random_count + 1
+    print(x, y, game_over, random_count)
+    return (x, y, game_over, random_count)
+
+def choose_shot(max_x, max_y, shot_grid, shot_pattern, random_count):
     """Select location on grid to shoot
        Return that grid location
 
@@ -449,18 +468,18 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern):
        Return:
        (x, y, game_over) = location of shot and boolean game over
     """
-    x = 2
-    y = 2
 
     if shot_pattern == "top_left_to_bottom_right":
         (x, y, game_over) = find_available_spot(max_x, max_y, shot_grid)
+    elif shot_pattern == "random":
+        (x, y, game_over, random_count) = find_random_spot(max_x, max_y, shot_grid, random_count)
     else:
         print(shot_pattern)
         (x, y) = generate_random_position(max_x, max_y)
         #x = 5
         #y = 5
 
-    return (x, y, game_over)
+    return (x, y, game_over, random_count)
 
 
 def determine_hit_or_miss(x, y, ship_grid, shot_grid):
@@ -471,7 +490,7 @@ def determine_hit_or_miss(x, y, ship_grid, shot_grid):
     return hit
 
 
-def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern = "top_left_to_bottom_right"):
+def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, random_count):
     """Generate shot location and track results on shot_grid.
        If shot hits then get another free shot.
        Concentrate on damaged ship or keep shooting randomly?
@@ -493,7 +512,7 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern = "top_left_to_bo
        game_over: boolean
     """
 
-    (x, y, game_over) = choose_shot(max_x, max_y, shot_grid, shot_pattern)
+    (x, y, game_over, random_count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, random_count)
     #print(x,y)
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
@@ -519,11 +538,13 @@ def main():
 
     # Start playing game - first iteration has computer taking single shots starting in top left
     # and finishing in bottom right spot
-    shot_pattern = "top_left_to_bottom_right"
+
+    #shot_pattern = "top_left_to_bottom_right"
+    shot_pattern = "random"
 
     game_over = False
     while not game_over:
-        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern)
+        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, random_count)
 
     print_grid(max_x, max_y, shot_grid)
 
