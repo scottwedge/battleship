@@ -13,7 +13,7 @@
 from setup_battleship import *
 
 
-def find_available_spot(max_x, max_y, shot_grid):
+def find_available_spot(max_x, max_y, shot_grid, count):
     """Find location on grid to shoot
        Return that grid location
 
@@ -43,7 +43,7 @@ def find_available_spot(max_x, max_y, shot_grid):
             spot = spot + 1
             #print(shot_grid[y][x], x, y)
 
-    return (x, y, game_over)
+    return (x, y, game_over, count)
 
 
 def find_random_spot(max_x, max_y, shot_grid, count):
@@ -64,6 +64,7 @@ def find_random_spot(max_x, max_y, shot_grid, count):
     print(x, y, game_over, count)
     return (x, y, game_over, count)
 
+
 def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
     """Select location on grid to shoot
        Return that grid location
@@ -80,7 +81,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
     count = count + 1
 
     if shot_pattern == "top_left_to_bottom_right":
-        (x, y, game_over, count) = find_available_spot(max_x, max_y, shot_grid)
+        (x, y, game_over, count) = find_available_spot(max_x, max_y, shot_grid, count)
     elif shot_pattern == "random":
         (x, y, game_over, count) = find_random_spot(max_x, max_y, shot_grid, count)
     else:
@@ -150,12 +151,13 @@ def main():
     # Start playing game - first iteration has computer taking single shots starting in top left
     # and finishing in bottom right spot
 
-    #shot_pattern = "top_left_to_bottom_right"
-    shot_pattern = "random"
+    shot_pattern = "top_left_to_bottom_right"
+    #shot_pattern = "random"
 
     game_over = False
+    count = 0
     while not game_over:
-        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, random_count)
+        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
 
     print_grid(max_x, max_y, shot_grid)
 
