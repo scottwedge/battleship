@@ -47,7 +47,6 @@ def find_available_spot(max_x, max_y, shot_grid):
 
 
 def find_random_spot(max_x, max_y, shot_grid, count):
-    count = count + 1
     valid_choice = False
 
     while not valid_choice:
@@ -56,7 +55,6 @@ def find_random_spot(max_x, max_y, shot_grid, count):
         if shot_grid[y][x] == NO_SHOT_CHAR:
             valid_choice = True
 
-    print("find_random_spot returns:",x, y, count)
     return (x, y, count)
 
 
@@ -133,7 +131,7 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
     else:
         shot_grid[y][x] = MISS_CHAR #update shot grid to show a miss
 
-    return game_over
+    return (game_over, count)
 
 
 
@@ -147,8 +145,7 @@ def main():
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
     print_grid(max_x, max_y, shot_grid)
 
-    # Start playing game - first iteration has computer taking single shots starting in top left
-    # and finishing in bottom right spot
+    # Start playing game 
 
     #shot_pattern = "top_left_to_bottom_right"
     shot_pattern = "random"
@@ -157,8 +154,8 @@ def main():
     count = 0  # initialize number of shots taken
 
     while not game_over:
-        game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
-        print_grid(max_x, max_y, shot_grid)
+        (game_over, count) = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
+        #print_grid(max_x, max_y, shot_grid)
 
     print_grid(max_x, max_y, shot_grid)
 
