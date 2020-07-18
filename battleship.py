@@ -46,8 +46,8 @@ def find_available_spot(max_x, max_y, shot_grid):
     return (x, y)
 
 
-def find_random_spot(max_x, max_y, shot_grid):
-
+def find_random_spot(max_x, max_y, shot_grid, count):
+    count = count + 1
     valid_choice = False
 
     while not valid_choice:
@@ -56,8 +56,8 @@ def find_random_spot(max_x, max_y, shot_grid):
         if shot_grid[y][x] == NO_SHOT_CHAR:
             valid_choice = True
 
-    print(x, y)
-    return (x, y)
+    print("find_random_spot returns:",x, y, count)
+    return (x, y, count)
 
 
 def determine_hit_or_miss(x, y, ship_grid, shot_grid):
@@ -83,15 +83,17 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
        (x, y, game_over, count) = location of shot and boolean game over
     """
     game_over = False
-    count = count + 1
-    print("COUNT=", count)
-    if count >= max_x * max_y:
+    count = count + 1  # increment shot counter
+
+    #print("COUNT=", count)
+
+    if count >= max_x * max_y: # if shot count exceeds number of grid spots then game is over
         game_over = True
 
     if shot_pattern == "top_left_to_bottom_right":
         (x, y) = find_available_spot(max_x, max_y, shot_grid)
     elif shot_pattern == "random":
-        (x, y) = find_random_spot(max_x, max_y, shot_grid)
+        (x, y, count) = find_random_spot(max_x, max_y, shot_grid, count)
     else:
         print(shot_pattern)
         (x, y) = generate_random_position(max_x, max_y)
@@ -117,21 +119,19 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
                "random-even": sum of row number and column number add to even number
                "random-odd": sum of row number and column number add to odd number
                "manual": manually selected by player
-       count: sometimes need to count how many turns have been taken
+       count: if "random" need to count how many turns have been taken
 
        Return:
        game_over: boolean
     """
 
     (x, y, game_over, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count)
-    #print(x,y)
+    
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
         shot_grid[y][x] = ship_grid[y][x] #update shot grid to show hit ship character
     else:
         shot_grid[y][x] = MISS_CHAR #update shot grid to show a miss
-
-    #print_grid(max_x, max_y, shot_grid)
 
     return game_over
 
@@ -154,9 +154,11 @@ def main():
     shot_pattern = "random"
 
     game_over = False
-    count = 0
+    count = 0  # initialize number of shots taken
+
     while not game_over:
         game_over = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
+        print_grid(max_x, max_y, shot_grid)
 
     print_grid(max_x, max_y, shot_grid)
 
