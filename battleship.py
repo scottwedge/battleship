@@ -13,7 +13,7 @@
 from setup_battleship import *
 
 
-def find_available_spot(max_x, max_y, shot_grid, count):
+def find_available_spot(max_x, max_y, shot_grid):
     """Find location on grid to shoot
        Return that grid location
 
@@ -43,14 +43,10 @@ def find_available_spot(max_x, max_y, shot_grid, count):
             spot = spot + 1
             #print(shot_grid[y][x], x, y)
 
-    return (x, y, game_over, count)
+    return (x, y)
 
 
-def find_random_spot(max_x, max_y, shot_grid, count):
-    game_over = False
-
-    if count >= max_x * max_y:
-        game_over = True
+def find_random_spot(max_x, max_y, shot_grid):
 
     valid_choice = False
 
@@ -60,9 +56,16 @@ def find_random_spot(max_x, max_y, shot_grid, count):
         if shot_grid[y][x] == NO_SHOT_CHAR:
             valid_choice = True
 
-    count = count + 1
-    print(x, y, game_over, count)
-    return (x, y, game_over, count)
+    print(x, y)
+    return (x, y)
+
+
+def determine_hit_or_miss(x, y, ship_grid, shot_grid):
+    if ship_grid[y][x] == EMPTY_CHAR:
+        hit = False  # miss
+    else:
+        hit = True
+    return hit
 
 
 def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
@@ -74,37 +77,33 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
        max_y:
        shot_grid: 
        shot_pattern: 
+       count: 
 
        Return:
        (x, y, game_over, count) = location of shot and boolean game over
     """
+    game_over = False
     count = count + 1
+    print("COUNT=", count)
+    if count >= max_x * max_y:
+        game_over = True
 
     if shot_pattern == "top_left_to_bottom_right":
-        (x, y, game_over, count) = find_available_spot(max_x, max_y, shot_grid, count)
+        (x, y) = find_available_spot(max_x, max_y, shot_grid)
     elif shot_pattern == "random":
-        (x, y, game_over, count) = find_random_spot(max_x, max_y, shot_grid, count)
+        (x, y) = find_random_spot(max_x, max_y, shot_grid)
     else:
         print(shot_pattern)
         (x, y) = generate_random_position(max_x, max_y)
-        #x = 5
-        #y = 5
 
     return (x, y, game_over, count)
 
 
-def determine_hit_or_miss(x, y, ship_grid, shot_grid):
-    if ship_grid[y][x] == EMPTY_CHAR:
-        hit = False  # miss
-    else:
-        hit = True
-    return hit
-
-
 def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
     """Generate shot location and track results on shot_grid.
-       If shot hits then get another free shot.
+       If shot hits then get another free shot?
        Concentrate on damaged ship or keep shooting randomly?
+       Continue until game ends.
 
        Parameters:
        max_x: width of grid
@@ -151,8 +150,8 @@ def main():
     # Start playing game - first iteration has computer taking single shots starting in top left
     # and finishing in bottom right spot
 
-    shot_pattern = "top_left_to_bottom_right"
-    #shot_pattern = "random"
+    #shot_pattern = "top_left_to_bottom_right"
+    shot_pattern = "random"
 
     game_over = False
     count = 0
