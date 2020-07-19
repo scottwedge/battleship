@@ -45,9 +45,20 @@ def find_available_spot(max_x, max_y, shot_grid):
 
     return (x, y)
 
+
+def find_random_even_spot(max_x, max_y, shot_grid, count):
+    valid_choice = False
+    while not valid_choice:
+        (x, y) = generate_random_position(max_x, max_y)
+     
+        if shot_grid[y][x] == NO_SHOT_CHAR and (x+y) % 2 == 0:
+            valid_choice = True
+
+    return (x, y, count)
+
+
 def find_random_odd_spot(max_x, max_y, shot_grid, count):
     valid_choice = False
-
     while not valid_choice:
         (x, y) = generate_random_position(max_x, max_y)
      
@@ -88,6 +99,8 @@ def is_game_over(max_x, max_y, shot_pattern, count):
         game_over = True  # if shot count exceeds number of grid spots then game is over
     elif count >= max_x * max_y / 2 and shot_pattern == "random_odd":
         game_over = True
+    elif count >= max_x * max_y / 2 and shot_pattern == "random_even":
+        game_over = True
     else:
         pass
 
@@ -115,6 +128,8 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
         (x, y, count) = find_random_spot(max_x, max_y, shot_grid, count)
     elif shot_pattern == "random_odd":
         (x, y, count) = find_random_odd_spot(max_x, max_y, shot_grid, count)
+    elif shot_pattern == "random_even":
+        (x, y, count) = find_random_even_spot(max_x, max_y, shot_grid, count)
 
     else:
         print(shot_pattern)
@@ -175,7 +190,8 @@ def main():
 
     #shot_pattern = "top_left_to_bottom_right"
     #shot_pattern = "random"
-    shot_pattern = "random_odd"
+    #shot_pattern = "random_odd"
+    shot_pattern = "random_even"
 
     game_over = False
     count = 0  # initialize number of shots taken
