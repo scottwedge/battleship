@@ -64,6 +64,20 @@ def determine_hit_or_miss(x, y, ship_grid, shot_grid):
     else:
         hit = True
     return hit
+ 
+
+def is_game_over(max_x, max_y, shot_pattern, count):
+    game_over = False
+    count = count + 1  # increment shot counter
+
+    if count >= max_x * max_y and shot_pattern == "top_left_to_bottom_right": 
+        game_over = True  # if shot count exceeds number of grid spots then game is over
+    elif count >= max_x * max_y and shot_pattern == "random":
+        game_over = True  # if shot count exceeds number of grid spots then game is over
+    else:
+        pass
+
+    return(game_over, count)
 
 
 def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
@@ -80,13 +94,6 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
        Return:
        (x, y, game_over, count) = location of shot and boolean game over
     """
-    game_over = False
-    count = count + 1  # increment shot counter
-
-    #print("COUNT=", count)
-
-    if count >= max_x * max_y: # if shot count exceeds number of grid spots then game is over
-        game_over = True
 
     if shot_pattern == "top_left_to_bottom_right":
         (x, y) = find_available_spot(max_x, max_y, shot_grid)
@@ -96,7 +103,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
         print(shot_pattern)
         (x, y) = generate_random_position(max_x, max_y)
 
-    return (x, y, game_over, count)
+    return (x, y, count)
 
 
 def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
@@ -123,7 +130,9 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
        game_over: boolean
     """
 
-    (x, y, game_over, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count)
+    (game_over, count) = is_game_over(max_x, max_y, shot_pattern, count)
+
+    (x, y, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count)
     
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
