@@ -224,9 +224,9 @@ def main():
 
     # Start playing game 
 
-    shot_pattern = "top_left_to_bottom_right"
+    #shot_pattern = "top_left_to_bottom_right"
     #shot_pattern = "random"
-    #shot_pattern = "random_odd"
+    shot_pattern = "random_odd"
     #shot_pattern = "random_even"
 
     game_over = False
