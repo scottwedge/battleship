@@ -51,8 +51,12 @@ def find_random_even_spot(max_x, max_y, shot_grid, count):
     while not valid_choice:
         (x, y) = generate_random_position(max_x, max_y)
      
-        if shot_grid[y][x] == NO_SHOT_CHAR and (x+y) % 2 == 0:
-            valid_choice = True
+        if shot_grid[y][x] == NO_SHOT_CHAR:
+            if count <= max_x * max_y / 2 and (x+y) % 2 == 0:
+                valid_choice = True
+            elif count > max_x * max_y / 2: #After all even spots taken, then guess randomly
+                valid_choice = True
+
 
     return (x, y, count)
 
@@ -62,8 +66,11 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
     while not valid_choice:
         (x, y) = generate_random_position(max_x, max_y)
      
-        if shot_grid[y][x] == NO_SHOT_CHAR and (x+y) % 2 == 1:
-            valid_choice = True
+        if shot_grid[y][x] == NO_SHOT_CHAR: 
+            if count <= max_x * max_y / 2 and (x+y) % 2 == 1:
+                valid_choice = True
+            elif count > max_x * max_y / 2: #After all odd spots taken, then guess randomly
+                valid_choice = True
 
     return (x, y, count)
 
@@ -115,7 +122,7 @@ def all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count):
             break  
         else:
             spot = spot + 1
-    print("ALL SUNK=", all_sunk)
+    print("ALL SUNK=", all_sunk, "COUNT =", count)
     return all_sunk
 
  
@@ -157,6 +164,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
        Return:
        (x, y, game_over, count) = location of shot and boolean game over
     """
+    count = count + 1
 
     if shot_pattern == "top_left_to_bottom_right":
         (x, y) = find_available_spot(max_x, max_y, shot_grid)
@@ -225,8 +233,8 @@ def main():
     # Start playing game 
 
     #shot_pattern = "top_left_to_bottom_right"
-    #shot_pattern = "random"
-    shot_pattern = "random_odd"
+    shot_pattern = "random"
+    #shot_pattern = "random_odd"
     #shot_pattern = "random_even"
 
     game_over = False
@@ -236,6 +244,7 @@ def main():
     while not game_over:
         count = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
+        # print_grid(max_x, max_y, shot_grid)
 
     print_grid(max_x, max_y, shot_grid)
 
