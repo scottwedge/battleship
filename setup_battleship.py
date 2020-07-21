@@ -137,39 +137,60 @@ def print_grid(max_x, max_y, grid):
 
 
 
-def setup_ships():
+def setup_ships(num = 1):
     """ Use default ship size and numbers to setup "Classic" game size
         Create tuple with unique ship type, character to place on grid, number of grid spots
 
         Parameters:
+        num: number of five person ship groups; 0 = only one aircraft carrier; default = 1 meaning one five ship group
         ships: list of tuples in form of (ship type, grid character, number of grid spots)
         ship: counter for ships
 
         Return:
         ships
     """
-    ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-            ("submarine", "S", 3), ("destroyer", "D", 2)]
 
-    """ Comment out other possible ship combinations
-    double_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                    ("submarine", "S", 3), ("destroyer", "D", 2), \
-                    ("submarine", "s", 3), ("destroyer", "d", 2)]
+    no_ship_group = [("aircraft carrier", "A", 5)]
 
-    ships = double_ships
+    one_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                      ("submarine", "S", 3), ("destroyer", "D", 2)]
 
-    quadruple_ships = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                    ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                    ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                    ("submarine", "S", 3), ("destroyer", "D", 2), \
-                    ("submarine", "S", 3), ("destroyer", "D", 2), \
-                    ("submarine", "s", 3), ("destroyer", "d", 2), \
-                    ("submarine", "s", 3), ("destroyer", "d", 2)]
+    two_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                      ("submarine", "S", 3), ("destroyer", "D", 2), \
+                      ("submarine", "s", 3), ("destroyer", "d", 2)]
 
-    ships = double_ships
-    """
+
+    three_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                        ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                        ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                        ("submarine", "S", 3), ("destroyer", "D", 2), \
+                        ("submarine", "s", 3), ("destroyer", "d", 2), \
+                        ("submarine", "s", 3), ("destroyer", "d", 2)]
+
+    four_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                      ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
+                      ("submarine", "S", 3), ("destroyer", "D", 2), \
+                      ("submarine", "S", 3), ("destroyer", "D", 2), \
+                      ("submarine", "s", 3), ("destroyer", "d", 2), \
+                      ("submarine", "s", 3), ("destroyer", "d", 2)]
+
+    if num == 0:
+        ships = no_ship_group
+    elif num == 1:
+        ships = one_ship_group
+    elif num == 0:
+        ships = two_ship_group
+    elif num == 0:
+        ships = three_ship_group
+    elif num == 0:
+        ships = four_ship_group
+    else:
+        ships = one_ship_group
+
+
 
     for ship in ships:
         (ship_type, ship_char, ship_size) = ship

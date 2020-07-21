@@ -77,8 +77,11 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
 def find_smart_random_spot(max_x, max_y, shot_grid, count):
     """When random shot hits ship, next shot should try to hit same ship
        by either being above or below or on either side of hit
+       Try next shot above the hit, and if miss then move clockwise and try again
+       If next shot also hits, then jump to opposite side.
     """
     
+    # Try with just single ship
     valid_choice = False
 
     while not valid_choice:
@@ -136,7 +139,7 @@ def all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count):
             break  
         else:
             spot = spot + 1
-    print("ALL SUNK=", all_sunk, "COUNT =", count)
+    #print("ALL SUNK=", all_sunk, "COUNT =", count)
     return all_sunk
 
  
@@ -248,9 +251,9 @@ def main():
 
     # Start playing game 
 
-    #shot_pattern = "top_left_to_bottom_right"
+    shot_pattern = "top_left_to_bottom_right"
     #shot_pattern = "random"
-    shot_pattern = "smart_random" # Add smart shot taking after random hit
+    #shot_pattern = "smart_random" # Add smart shot taking after random hit
     #shot_pattern = "random_odd"
     #shot_pattern = "random_even"
 
@@ -265,7 +268,7 @@ def main():
 
     print_grid(max_x, max_y, shot_grid)
 
-    print("GAME OVER")
+    print(shot_pattern, "GAME OVER")
 
 if __name__ == "__main__":
     main()
