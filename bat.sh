@@ -7,10 +7,14 @@ import sys
    with default values for each
 """
 
-full_command_line = str(sys.argv)
-length = len(sys.argv)
+def main():
+    full_command_line = str(sys.argv)
+    length = len(sys.argv)
 
-print("CLI=", full_command_line, length)
+    print("CLI=", full_command_line, length)
 
-for n in sys.argv:
-    print(n)
+    for n in sys.argv:
+        print(n)
+
+if __name__ == "__main__":
+	main()
