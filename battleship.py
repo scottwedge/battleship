@@ -11,6 +11,7 @@
 
 # Import statements
 from setup_battleship import *
+import sys
 
 
 def find_available_spot(max_x, max_y, shot_grid):
@@ -238,16 +239,42 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
     return count
 
 
+def show_help():
+    """List all help for this program
+    with explanation of expected values and order of arguments
+
+    Parameters: none
+    """
+    print("First parameter is 'num=' followed by 0 through 4 inclusive for number of ship groups")
+    print("Second parameter is 'pattern=' followed by possible values of 'random' or 'random_even' or 'random_odd'")
+
+
+def handle_args(args): 
+    """Handle arguments if any
+    Check if "--h" or "-help" are included
+
+    Parameters:
+    args: full command line contents
+    """
+    print("CLI=", args)
+
+    if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
+        show_help()
+
+
+
 
 def main():
+    cli = handle_args(sys.argv)   # handle command line arguments
     # Set grid size and place ships on grid
     (max_x, max_y) = set_grid_size()
     (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
     ships = setup_ships()
     ship_grid = place_ships(max_x, max_y, empty_grid, ships)
     print_grid(max_x, max_y, ship_grid)
+    print("")    # blank line after ship grid
     (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
-    print_grid(max_x, max_y, shot_grid)
+    #print_grid(max_x, max_y, shot_grid)  #print empty shot grid
 
     # Start playing game 
 
