@@ -9,14 +9,15 @@ import sys
 
 def handle_args(s):
     cli = s
-    length = len(s)
-    return (cli, length)
+    #length = len(s)
+    return cli
 
 
 def main():
-    (cli, length) = handle_args(sys.argv)
+    cli = handle_args(sys.argv)
 
-    print("CLI=", cli, length)
+    print("CLI=", cli)
+    print("LENGTH=", len(cli))
 
     for n in cli:
         print(n)
