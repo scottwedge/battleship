@@ -7,13 +7,18 @@ import sys
    with default values for each
 """
 
+def handle_args(s):
+    cli = s
+    length = len(s)
+    return (cli, length)
+
+
 def main():
-    full_command_line = str(sys.argv)
-    length = len(sys.argv)
+    (cli, length) = handle_args(sys.argv)
 
-    print("CLI=", full_command_line, length)
+    print("CLI=", cli, length)
 
-    for n in sys.argv:
+    for n in cli:
         print(n)
 
 if __name__ == "__main__":
