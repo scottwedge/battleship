@@ -259,14 +259,13 @@ def handle_args(args):
     args: full command line contents
     """
     game_over = False
-    n = 1  # set default
-    p = "random" # set defaults
+    n = 1  # set default in case ask for help
+    p = "random" # set defaults in case ask for help
 
-    #print("CLI=", args[1:])
+    print("CLI=", args[:])
 
     if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
         game_over = True
-        #print(args)
         show_help()
 
     else:
