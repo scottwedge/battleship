@@ -33,6 +33,8 @@ MAX_WIDTH = 26
 EMPTY_CHAR = "."
 NO_SHOT_CHAR = " "
 MISS_CHAR = "X"  
+MAX_SHIP_GROUPS = 4  # maximum number of ship groups that can be selected.  Relate to grid size \
+                     #  since one ship group uses 17 grids ?
 
 
 def create_column_headings(width = default_x, max_heading = MAX_HEADING):
@@ -160,7 +162,6 @@ def setup_ships(num = 1):
                       ("submarine", "S", 3), ("destroyer", "D", 2), \
                       ("submarine", "s", 3), ("destroyer", "d", 2)]
 
-
     three_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                         ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                         ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
@@ -188,12 +189,14 @@ def setup_ships(num = 1):
     elif num == 4:
         ships = four_ship_group
     else:
+        n = 1
         ships = one_ship_group
 
 
     for ship in ships:
         (ship_type, ship_char, ship_size) = ship
         #print(ship_type, ship_char, ship_size)
+
     return ships
 
 

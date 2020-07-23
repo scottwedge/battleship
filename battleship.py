@@ -273,6 +273,10 @@ def handle_args(args):
             if "num=" in arg:
                 val = arg.split('=')   #split value to get number following the '=' sign
                 n = int(val[1])
+
+                if n > MAX_SHIP_GROUPS:
+                    n = MAX_SHIP_GROUPS
+
             if "pattern=" in arg:
                 val2 = arg.split('=')   #split value to get string following the '=' sign
                 p = val2[1]
