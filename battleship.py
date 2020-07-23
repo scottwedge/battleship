@@ -306,10 +306,12 @@ def main():
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
         # print_grid(max_x, max_y, shot_grid)
 
-    #print_grid(max_x, max_y, shot_grid)
+    # if game was played (not "--h" in command line)
+    if count > 0:
+        print_grid(max_x, max_y, shot_grid)
+        print("")
 
-    print("")
-    print(shot_pattern, "GAME OVER")
+    print(shot_pattern,"     ", "GAME OVER","     "," SHIP GROUPS=", n, "    ", "COUNT=", count)
 
 if __name__ == "__main__":
     main()
