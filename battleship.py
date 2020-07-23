@@ -247,6 +247,8 @@ def show_help():
     """
     print("First parameter is 'num=' followed by 0 through 4 inclusive for number of ship groups")
     print("Second parameter is 'pattern=' followed by possible values of 'random' or 'random_even' or 'random_odd'")
+    print("For example, 'battleship.py num=2 pattern=random'")
+    print("")
 
 
 def handle_args(args): 
@@ -256,20 +258,30 @@ def handle_args(args):
     Parameters:
     args: full command line contents
     """
-    print("CLI=", args)
+    print("CLI=", args[1:])
 
     if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
         show_help()
+        # exit program
 
+    for arg in args:
+        if "num=" in arg:
+            val = arg.split('=')   #split value to get number following the '=' sign
+            n = int(val[1])
+        if "pattern=" in arg:
+            val = arg.split('=')   #split value to get string following the '=' sign
+            p = val[1]
+
+    return (n, p)
 
 
 
 def main():
-    cli = handle_args(sys.argv)   # handle command line arguments
+    (n, p) = handle_args(sys.argv)   # handle command line arguments
     # Set grid size and place ships on grid
     (max_x, max_y) = set_grid_size()
     (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
-    ships = setup_ships()
+    ships = setup_ships(n)
     ship_grid = place_ships(max_x, max_y, empty_grid, ships)
     print_grid(max_x, max_y, ship_grid)
     print("")    # blank line after ship grid
@@ -278,7 +290,8 @@ def main():
 
     # Start playing game 
 
-    shot_pattern = "top_left_to_bottom_right"
+    shot_pattern = p
+    #shot_pattern = "top_left_to_bottom_right"
     #shot_pattern = "random"
     #shot_pattern = "smart_random" # Add smart shot taking after random hit
     #shot_pattern = "random_odd"
@@ -295,6 +308,7 @@ def main():
 
     print_grid(max_x, max_y, shot_grid)
 
+    print("")
     print(shot_pattern, "GAME OVER")
 
 if __name__ == "__main__":
