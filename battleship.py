@@ -258,6 +258,9 @@ def handle_args(args):
     Parameters:
     args: full command line contents
     """
+    n = 1  # set default
+    p = "random" # set defaults
+
     print("CLI=", args[1:])
 
     if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
