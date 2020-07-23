@@ -262,7 +262,7 @@ def handle_args(args):
     n = 1  # set default
     p = "random" # set defaults
 
-    print("CLI=", args[1:])
+    #print("CLI=", args[1:])
 
     if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
         game_over = True
@@ -274,12 +274,10 @@ def handle_args(args):
             if "num=" in arg:
                 val = arg.split('=')   #split value to get number following the '=' sign
                 n = int(val[1])
-                break
             if "pattern=" in arg:
                 val2 = arg.split('=')   #split value to get string following the '=' sign
                 p = val2[1]
 
-    print("N=", n, "P=", p, "GAME_OVER=", game_over)
     return (game_over, n, p)
 
 
@@ -288,29 +286,27 @@ def main():
     game_over = False
     count = 0  # initialize number of shots taken
     (game_over, n, p) = handle_args(sys.argv)   # handle command line arguments
-
-    # Start playing game 
-
     shot_pattern = p
+    print("SHOT_PATTERN=", shot_pattern)
 
-    # Set grid size and place ships on grid
-    (max_x, max_y) = set_grid_size()
-    (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
-    ships = setup_ships(n)
-    ship_grid = place_ships(max_x, max_y, empty_grid, ships)
-    print_grid(max_x, max_y, ship_grid)
-    print("")    # blank line after ship grid
-    (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
-    #print_grid(max_x, max_y, shot_grid)  #print empty shot grid
+    if game_over == False:
+        # Set grid size and place ships on grid
+        (max_x, max_y) = set_grid_size()
+        (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
+        ships = setup_ships(n)
+        ship_grid = place_ships(max_x, max_y, empty_grid, ships)
+        print_grid(max_x, max_y, ship_grid)
+        print("")    # blank line after ship grid
+        (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
+        #print_grid(max_x, max_y, shot_grid)  #print empty shot grid
 
     # Start playing game 
-
     while not game_over:
         count = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
         # print_grid(max_x, max_y, shot_grid)
 
-    print_grid(max_x, max_y, shot_grid)
+    #print_grid(max_x, max_y, shot_grid)
 
     print("")
     print(shot_pattern, "GAME OVER")
