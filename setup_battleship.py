@@ -181,20 +181,19 @@ def setup_ships(num = 1):
         ships = no_ship_group
     elif num == 1:
         ships = one_ship_group
-    elif num == 0:
+    elif num == 2:
         ships = two_ship_group
-    elif num == 0:
+    elif num == 3:
         ships = three_ship_group
-    elif num == 0:
+    elif num == 4:
         ships = four_ship_group
     else:
         ships = one_ship_group
 
 
-
     for ship in ships:
         (ship_type, ship_char, ship_size) = ship
-        print(ship_type, ship_char, ship_size)
+        #print(ship_type, ship_char, ship_size)
     return ships
 
 
