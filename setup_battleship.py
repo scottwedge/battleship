@@ -22,14 +22,15 @@ random.seed(datetime.now())
 
 
 # Set default values
-default_x = 10  # X axis (A through J)
-default_y = 10  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
+default_x = 20  # X axis (A through J)
+default_y = 20  # Y axis (1 through 10) (top left grid is A-1, bottom right grid is J-10)
 random_count = 1 # initial counter if shot generation is random
 
 
 # Set constants
 MAX_HEADING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 MAX_WIDTH = 26
+MAX_HEIGHT = 26
 EMPTY_CHAR = "."
 NO_SHOT_CHAR = " "
 MISS_CHAR = "X"  
@@ -62,9 +63,9 @@ def create_column_headings(width = default_x, max_heading = MAX_HEADING):
     return heading
 
 
-def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
+def set_grid_size(max_x, max_y):
     """ Create playing grid
-    Default values to setup "Classic" game size of 10x10 grid
+    (Default values to setup "Classic" game size of 10x10 grid)
 
     Parameters:
     max_x: width of grid/ number of columns
@@ -76,10 +77,11 @@ def set_grid_size(max_x = default_x, max_y = default_y, max_width = MAX_WIDTH):
     """
 
     # Check range of parameters, must be > 0 and < max
-    if max_x > max_width:
-        max_x = max_width
-    if max_y < 0:
-        max_y = default_y
+    if max_x > MAX_WIDTH:
+        max_x = MAX_WIDTH
+
+    if max_y > MAX_HEIGHT:
+        max_y = MAX_HEIGHT
 
     return (max_x, max_y)
 

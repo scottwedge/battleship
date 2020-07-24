@@ -253,7 +253,14 @@ def show_help():
 
 def handle_args(args): 
     """Handle arguments if any
-    Check if "--h" or "-help" are included
+    Check if "--h" or "-help" or "-h" or "--help" are included then display Help options and exit
+
+    Arguments format is:
+    "x=A" where A is width of grid (defaults to 10)
+    "y=B" where B is the height of the grid (defaults to 10)
+    "num=X" for X number of ship groups
+    "pattern=Y" for shot_pattern Y is "random" or "random_even" or "random"odd" or "top_left_to_bottom_right" etc
+
 
     Parameters:
     args: full command line contents
@@ -270,31 +277,39 @@ def handle_args(args):
 
     else:
         for arg in args:
+            if "x=" in arg:
+                val = arg.split('=')   #split value to get string following the '=' sign
+                x = int(val[1])
+
+            if "y=" in arg:
+                val2 = arg.split('=')   #split value to get string following the '=' sign
+                y = int(val2[1])
+
             if "num=" in arg:
-                val = arg.split('=')   #split value to get number following the '=' sign
-                n = int(val[1])
+                val3 = arg.split('=')   #split value to get number following the '=' sign
+                n = int(val3[1])
 
                 if n > MAX_SHIP_GROUPS:
                     n = MAX_SHIP_GROUPS
 
             if "pattern=" in arg:
-                val2 = arg.split('=')   #split value to get string following the '=' sign
-                p = val2[1]
+                val4 = arg.split('=')   #split value to get string following the '=' sign
+                p = val4[1]
 
-    return (game_over, n, p)
+    return (game_over, x, y, n, p)
 
 
 
 def main():
     game_over = False
     count = 0  # initialize number of shots taken
-    (game_over, n, p) = handle_args(sys.argv)   # handle command line arguments
+    (game_over, x, y, n, p) = handle_args(sys.argv)   # handle command line arguments
     shot_pattern = p
     print("SHOT_PATTERN=", shot_pattern)
 
     if game_over == False:
         # Set grid size and place ships on grid
-        (max_x, max_y) = set_grid_size()
+        (max_x, max_y) = set_grid_size(x, y)
         (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
         ships = setup_ships(n)
         ship_grid = place_ships(max_x, max_y, empty_grid, ships)
