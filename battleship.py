@@ -278,6 +278,11 @@ def handle_args(args):
         show_help()
 
     else:
+        game_over = False # initialize
+        x=10  # initialize optional variable
+        y=10  # initialize optional variable
+        n=1 # initialize optional variable
+        p="random" # initialize optional variable
         for arg in args:
             if "x=" in arg:
                 val = arg.split('=')   #split value to get string following the '=' sign

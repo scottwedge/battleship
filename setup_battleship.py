@@ -183,8 +183,8 @@ def setup_ships(num = 1):
 
 def generate_random_position(max_x, max_y):
     """ Return random number
-        Top row is reserved for column headings so range does not start with 1
-        First column is reserved for row numbers
+        Top row ([0]) is reserved for column headings so range does not start with 1
+        First column ([0]) is reserved for row numbers
 
         Parameters:
         max_x: width of grid
@@ -301,6 +301,8 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
     elif orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
+
+    print(max_x, max_y, x, y,orientation, size, ship_fit)
     return ship_fit
 
 
