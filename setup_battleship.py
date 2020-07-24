@@ -38,7 +38,7 @@ MAX_SHIP_GROUPS = 4  # maximum number of ship groups that can be selected.  Rela
                      #  since one ship group uses 17 grids ?
 
 
-def create_column_headings(width = default_x, max_heading = MAX_HEADING):
+def create_column_headings(width = default_x):
     """ Print heading for every column in grid
     Traditionally game is ten columns wide with letters A through J from left to right
     Our grid has left-most column containing row number. Its heading is "_".
@@ -58,7 +58,7 @@ def create_column_headings(width = default_x, max_heading = MAX_HEADING):
     
     j = 0
     while j < width:
-        heading.append(max_heading[j])
+        heading.append(MAX_HEADING[j])
         j = j + 1
     return heading
 
@@ -105,7 +105,7 @@ def create_initial_empty_grid(max_x, max_y, empty_char = EMPTY_CHAR):
     """
     grid = [] # Initialize game grid
         
-    grid.append(create_column_headings()) # first/top row of grid is column headings
+    grid.append(create_column_headings(max_x)) # first/top row of grid is column headings
 
     y =  1
     while y <= max_y:     # for every row
