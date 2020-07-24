@@ -154,45 +154,23 @@ def setup_ships(num = 1):
         ships
     """
 
+    """
     no_ship_group = [("aircraft carrier", "A", 5)]
 
     one_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
                       ("submarine", "S", 3), ("destroyer", "D", 2)]
+    """
 
-    two_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                      ("submarine", "S", 3), ("destroyer", "D", 2), \
-                      ("submarine", "s", 3), ("destroyer", "d", 2)]
+    no_ship_group = [("aircraft carrier", "A", 5)]
 
-    three_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                        ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                        ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                        ("submarine", "S", 3), ("destroyer", "D", 2), \
-                        ("submarine", "s", 3), ("destroyer", "d", 2), \
-                        ("submarine", "s", 3), ("destroyer", "d", 2)]
-
-    four_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                      ("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
-                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                      ("aircraft carrier", "a", 5), ("battleship","b", 4), ("cruiser", "c", 3), \
-                      ("submarine", "S", 3), ("destroyer", "D", 2), \
-                      ("submarine", "S", 3), ("destroyer", "D", 2), \
-                      ("submarine", "s", 3), ("destroyer", "d", 2), \
-                      ("submarine", "s", 3), ("destroyer", "d", 2)]
+    one_ship_group = [("aircraft carrier", "A", 5), ("battleship","B", 4), ("cruiser", "C", 3), \
+                      ("submarine", "S", 3), ("destroyer", "D", 2)]
+    """Loop through group and gather number of each ship type in descending size since larger
+       ships are easier to place first
+    """
 
     if num == 0:
         ships = no_ship_group
-    elif num == 1:
-        ships = one_ship_group
-    elif num == 2:
-        ships = two_ship_group
-    elif num == 3:
-        ships = three_ship_group
-    elif num == 4:
-        ships = four_ship_group
-    else:
-        n = 1
-        ships = one_ship_group
 
 
     for ship in ships:
