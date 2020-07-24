@@ -34,7 +34,7 @@ MAX_HEIGHT = 26
 EMPTY_CHAR = "."
 NO_SHOT_CHAR = " "
 MISS_CHAR = "X"  
-MAX_SHIP_GROUPS = 4  # maximum number of ship groups that can be selected.  Relate to grid size \
+MAX_SHIP_GROUPS = 100  # maximum number of ship groups that can be selected.  Relate to grid size \
                      #  since one ship group uses 17 grids ?
 
 
