@@ -329,7 +329,7 @@ def main():
         print_grid(max_x, max_y, shot_grid)
         print("")
 
-    print(shot_pattern,"     ", "GAME OVER","     "," SHIP GROUPS=", n, "    ", "COUNT=", count)
+    print(shot_pattern,"     ", "GAME OVER","     "," SHIP GROUPS=", n, "    ", "COUNT=", count, "of", max_x * max_y)
 
 if __name__ == "__main__":
     main()
