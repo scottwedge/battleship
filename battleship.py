@@ -273,6 +273,8 @@ def handle_args(args):
 
     if "--h" in args or "-help" in args or "-h" in args or "--help" in args:
         game_over = True
+        x=0
+        y=0
         show_help()
 
     else:
@@ -302,6 +304,8 @@ def handle_args(args):
 
 def main():
     game_over = False
+    max_x = 0
+    max_y = 0
     count = 0  # initialize number of shots taken
     (game_over, x, y, n, p) = handle_args(sys.argv)   # handle command line arguments
     shot_pattern = p
