@@ -13,7 +13,6 @@
 
 # Import statements
 import random
-import time # needed for delay in loops to analyze printed output
 from datetime import datetime
 
 
@@ -293,16 +292,15 @@ def does_ship_fit(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
    ship_fit: True or False     True if fits on grid, otherwise false
    """
     ship_fit = False
-    if orientation == 1 and size < y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
+    if orientation == 1 and size <= y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 2 and y + size < max_y and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
+    elif orientation == 2 and y + size <= max_y + 1 and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 3 and size < x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
+    elif orientation == 3 and size <= x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
-    elif orientation == 4 and size + x < max_x and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
+    elif orientation == 4 and size + x <= max_x + 1 and not ship_overlap(max_x, max_y, grid, x, y, orientation, size, EMPTY_CHAR):
         ship_fit = True
 
-    print(max_x, max_y, x, y,orientation, size, ship_fit)
     return ship_fit
 
 
