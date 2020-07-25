@@ -35,6 +35,7 @@ NO_SHOT_CHAR = " "
 MISS_CHAR = "X"  
 MAX_SHIP_GROUPS = 100  # maximum number of ship groups that can be selected.  Relate to grid size \
                      #  since one ship group uses 17 grids ?
+MAX_TIMEOUT = 100000  # Try to configure ships 100k times; else timeout ship placement and quit session
 
 
 def create_column_headings(width = default_x):
@@ -381,15 +382,23 @@ def place_ships(max_x, max_y, grid, ships):
         grid
     """
 
+    timeout_counter = 1
+    timeout = False
+
     for ship in ships:
         (type, char, size) = ship
         fit = False
-        while not fit:
+        while not fit and not timeout: 
+            timeout_counter = timeout_counter + 1
+            if timeout_counter > MAX_TIMEOUT:
+                timeout = True
+                print('SETUP TIMEOUT')
+
             (x, y) = generate_random_position(max_x, max_y)
 
             # generate random orientation for ship (up, down, left, right)
             orientation = generate_random_orientation()
-
+   
             # Does this position and orientation fit on grid without overlapping another ship
             # If not, then generate new position and orientation and try again
             
@@ -399,6 +408,6 @@ def place_ships(max_x, max_y, grid, ships):
 
     # All ships placed so print grid now
     # print_grid(max_x, max_y, grid)
-    return grid
+    return (grid, timeout)
 
 

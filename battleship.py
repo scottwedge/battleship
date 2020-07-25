@@ -321,7 +321,11 @@ def main():
         (max_x, max_y) = set_grid_size(x, y)
         (max_x, max_y, empty_grid) = create_initial_empty_grid(max_x, max_y, EMPTY_CHAR)
         ships = setup_ships(n)
-        ship_grid = place_ships(max_x, max_y, empty_grid, ships)
+        (ship_grid, timeout) = place_ships(max_x, max_y, empty_grid, ships)
+        
+        if timeout:
+            game_over = True
+
         print_grid(max_x, max_y, ship_grid)
         print("")    # blank line after ship grid
         (max_x, max_y, shot_grid) = create_initial_empty_grid(max_x, max_y, NO_SHOT_CHAR)
