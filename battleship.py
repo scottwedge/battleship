@@ -245,9 +245,12 @@ def show_help():
 
     Parameters: none
     """
-    print("First parameter is 'num=' followed by 0 through 4 inclusive for number of ship groups")
-    print("Second parameter is 'pattern=' followed by possible values of 'random' or 'random_even' or 'random_odd'")
-    print("For example, 'battleship.py num=2 pattern=random'")
+    print("All parameters are optional. ")
+    print("Parameter to set grid width is 'x=' followed by number 5 through 26 inclusive")
+    print("Parameter to set grid height is 'y=' followed by number 5 through 26 inclusive")
+    print("One parameter is 'num=' followed by 0 through 4 inclusive for number of ship groups")
+    print("Another parameter is 'pattern=' followed by possible values of 'random' or 'random_even' or 'random_odd'")
+    print("For example, 'battleship.py x=20 y=15 num=2 pattern=random'")
     print("")
 
 
