@@ -95,6 +95,19 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count):
 
 
 def find_random_spot(max_x, max_y, shot_grid, count):
+    """Select a random spot for the shot
+       If spot was chosen previously, must select another spot
+
+       Parameters:
+       max_x: width of grid
+       max_y: height of grid
+       shot_grid: record of shots already taken
+       count: number of shots already taken
+
+       Return:
+       (x, y, count): tuple with shot locations x,y and updated count of shots taken
+
+    """
     valid_choice = False
 
     while not valid_choice:
