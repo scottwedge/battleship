@@ -107,6 +107,18 @@ def find_random_spot(max_x, max_y, shot_grid, count):
 
 
 def determine_hit_or_miss(x, y, ship_grid, shot_grid):
+    """Figure out if the shot landed in an empty spot
+       or where a ship is located.
+
+    Parameters:
+       x: horizontal location of shot
+       y: vertical location of shot
+       ship_grid: grid with ship locations
+       shot_grid: grid tracking shots
+
+       Return: hit (boolean) whether shot is a hit (True) or a miss (False)
+    """
+
     if ship_grid[y][x] == EMPTY_CHAR:
         hit = False  # miss
     else:
