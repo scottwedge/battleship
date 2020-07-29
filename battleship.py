@@ -76,6 +76,20 @@ def find_random_even_spot(max_x, max_y, shot_grid, count):
 
 
 def find_random_odd_spot(max_x, max_y, shot_grid, count):
+    """Select a spot for the shot where x + y is odd so
+       select every second spot on the diagonal so quickly cover half the grid
+       If spot was chosen previously, must select another spot
+
+       Parameters:
+       max_x: width of grid
+       max_y: height of grid
+       shot_grid: record of shots already taken
+       count: number of shots already taken
+
+       Return:
+       (x, y, count): tuple with shot locations x,y and updated count of shots taken
+
+    """
     valid_choice = False
     while not valid_choice:
         (x, y) = generate_random_position(max_x, max_y)
@@ -94,6 +108,15 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count):
        by either being above or below or on either side of hit
        Try next shot above the hit, and if miss then move clockwise and try again
        If next shot also hits, then jump to opposite side.
+
+       Parameters:
+       max_x: width of grid
+       max_y: height of grid
+       shot_grid: record of shots already taken
+       count: number of shots already taken
+
+       Return:
+       (x, y, count): tuple with shot locations x,y and updated count of shots taken
     """
     
     # Try with just single ship
