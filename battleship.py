@@ -60,7 +60,6 @@ def find_random_even_spot(max_x, max_y, shot_grid, count):
 
        Return:
        (x, y, count): tuple with shot locations x,y and updated count of shots taken
-
     """
     valid_choice = False
     while not valid_choice:
