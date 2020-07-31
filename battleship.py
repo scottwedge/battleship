@@ -104,8 +104,11 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
 
 def find_smart_random_spot(max_x, max_y, shot_grid, count):
     """When random shot hits ship, next shot should try to hit same ship
-       by either being above or below or on either side of hit
-       Try next shot above the hit, and if miss then move clockwise and try again
+       by either being above or below or on either side of first hit.
+       If there are already two hits side by side then try to get third and
+       fourth etc hits along that (vertical or horizontal) line until the ship sinks.
+       If no "best guess" at the next shot, start with shot above and move 
+       clockwise and try again
        If next shot also hits, then jump to opposite side.
 
        Parameters:
