@@ -102,33 +102,47 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
     return (x, y, count)
 
 
-def find_smart_random_spot(max_x, max_y, shot_grid, count):
-    """When random shot hits ship, next shot should try to hit same ship
+def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_shot_xy):
+    """Start with random shots and after a ship sinks.
+    
+       When random shot hits ship, next shot should try to hit same ship
        by either being above or below or on either side of first hit.
-       If there are already two hits side by side then try to get third and
-       fourth etc hits along that (vertical or horizontal) line until the ship sinks.
-       If no "best guess" at the next shot, start with shot above and move 
-       clockwise and try again
-       If next shot also hits, then jump to opposite side.
+
+       If there are already two hits side by side then the smart shot is to try to get third 
+       and fourth etc hits along that (vertical or horizontal) line until the ship sinks.
+
+       If just a single hit, there is no "best guess" at the next shot,  so start with shot 
+       above and move clockwise and try again
+
+       If next shot also hits, then figure out ship orientation and shot along that track.
+
+       So unlike other random shot selections, this function need to track last successful hit 
+       so that next attempt can be based on that information.
+
+       Several ways to record last hit: either x,y co-ordinates or mark that somehow on shot_grid.
 
        Parameters:
        max_x: width of grid
        max_y: height of grid
        shot_grid: record of shots already taken
        count: number of shots already taken
+       last_hit_xy: x,y co-ordinates tuple of last hit
+       last_shot_xy: x,y co-ordinates tuple of last shot
 
        Return:
        (x, y, count): tuple with shot locations x,y and updated count of shots taken
     """
     
-    # Try with just single ship
     valid_choice = False
 
     while not valid_choice:
-        (x, y) = generate_random_position(max_x, max_y)
+        if last_hit_xy == (0,0): # if no previous shots have hit then take random shot
+            (x, y) = generate_random_position(max_x, max_y)  # take random shots when game starts or after a ship sinks
      
-        if shot_grid[y][x] == NO_SHOT_CHAR:
-            valid_choice = True
+            if shot_grid[y][x] == NO_SHOT_CHAR:
+                valid_choice = True
+        else:
+
 
     return (x, y, count)
 
