@@ -122,7 +122,7 @@ def try_to_sink_ship (last_hit_xy, shot_grid, count):
     else:
         (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
 
-    return (x, y)
+return (x, y)
 
 
 
