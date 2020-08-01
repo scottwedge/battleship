@@ -102,6 +102,30 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
     return (x, y, count)
 
 
+def try_to_sink_ship (last_hit_xy, shot_grid, count):
+    """Since last shot hit ship and did not sink it, search for adjacent shots that have also hit.
+       If those shots are found, determine the orientation of the ship and try on either side of the hits.
+       If no adjacent hits, then start one above in grid (if exists) and then work clockwise.
+
+       Parameters:
+       last_hit_xy: tuple with (x, y) co-ordinates of hit on ship
+       shot_grid: record of previous shots (so not overlap)
+       count: count of total shots taken
+
+       Return:
+       (x, y, count): next shot to take and incremented count
+    """
+
+    if adjacent_hit(last_hit_xy, shot_grid) == True:
+        determine_ship_possible_orientation(last_hit_xy, shot_grid)
+        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
+    else:
+        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
+
+    return (x, y)
+
+
+
 def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_shot_xy):
     """Start with random shots and after a ship sinks.
     
@@ -142,6 +166,7 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_sho
             if shot_grid[y][x] == NO_SHOT_CHAR:
                 valid_choice = True
         else:
+            (x, y) = try_to_sink_ship (last_hit_xy, shot_grid, count)
 
 
     return (x, y, count)
