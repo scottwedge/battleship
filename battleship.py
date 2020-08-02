@@ -102,6 +102,26 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
     return (x, y, count)
 
 
+def adjacent_hit(last_hit_xy, shot_grid):
+    """Determine if an adjacent row or column exists if there was a previous hit 
+       adjacent to latest hit.
+       That is a good indication that the same ship was hit so we
+       can guess with orientation the ship has.
+
+       There is a small chance that the adjacent hit is on a different ship so also
+       need to handle that scenario.
+
+       Parameters:
+       last_hit_xy: (x, y) tuple with coordinates of last hit
+       shot_grid: record of all previous shots
+
+       Return:
+       adjacent_hit: boolean - True if there was an adjacent hit 
+    """
+       adjacent_hit = False
+       return adjacent_hit
+
+
 def try_to_sink_ship (last_hit_xy, shot_grid, count):
     """Since last shot hit ship and did not sink it, search for adjacent shots that have also hit.
        If those shots are found, determine the orientation of the ship and try on either side of the hits.
@@ -117,7 +137,7 @@ def try_to_sink_ship (last_hit_xy, shot_grid, count):
     """
 
     if adjacent_hit(last_hit_xy, shot_grid) == True:
-        determine_ship_possible_orientation(last_hit_xy, shot_grid)
+        determine_possible_ship_orientation(last_hit_xy, shot_grid)
         (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
     else:
         (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
