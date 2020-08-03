@@ -122,7 +122,7 @@ def update_orientation(orient, current):
     elif orient == "vertical" and current =="horizontal":
         orient = "both"     # both orientations are possible
         break
-    elif orient = "horizontal" and current == "vertical":
+    elif orient == "horizontal" and current == "vertical":
         orient = both       # both orientations are possible
         break
     fi
