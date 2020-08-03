@@ -102,9 +102,38 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
     return (x, y, count)
 
 
+def update_orientation(orient, current):
+    """ Determine the orientation(s) of the ship or ships adjacent to hit
+       by checking all four spots adjacent to hit spot
+
+       Parameters:
+       orient: existing orientation ("none", "vertical", "horizontal", "both")
+       current: orientation of latest check
+
+       Return: 
+       orient: updated orientation value
+    """
+
+    if orient == "both":
+        break                # cannot add to this state
+    elif orient == "none":
+        orient = current    # set to current orientation
+        break
+    elif orient == "vertical" and current =="horizontal":
+        orient = "both"     # both orientations are possible
+        break
+    elif orient = "horizontal" and current == "vertical":
+        orient = both       # both orientations are possible
+        break
+    fi
+
+    return orient
+
+
 def adjacent_hit(last_hit_xy, shot_grid):
     """Determine if an adjacent row or column exists if there was a previous hit 
        adjacent to latest hit.
+
        That is a good indication that the same ship was hit so we
        can guess with orientation the ship has.
 
@@ -117,15 +146,42 @@ def adjacent_hit(last_hit_xy, shot_grid):
 
        Return:
        adjacent_hit: boolean - True if there was an adjacent hit 
+       orientation: "none", "vertical", "horizontal" or "both"
     """
-       adjacent_hit = False
-       return adjacent_hit
+    adjacent_hit = False
+    orient = "none"
+
+    #Check if row above exists and was a hit
+    if y >= 2:
+        if shot_grid[x][y - 1] != (NO_SHOT_CHAR or MISS_CHAR):
+            adjacent_hit = True  # adjacent shot above is hit so ship orientation is vertical
+            orient = update_orientation (orient, "vertical")
+
+    # Check if column exists to right and was a hit
+    if x <= 9:
+        if shot_grid[x + 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
+            adjacent_hit = True  # adjacent shot above is to right so ship orientation is horizontal
+            orient = update_orientation (orient, "horizontal")
+
+    #Check if row below exists and was a hit
+    if y <= 9:
+        if shot_grid[x][y + 1] != (NO_SHOT_CHAR or MISS_CHAR):
+            adjacent_hit = True  # adjacent shot below is hit so ship orientation is vertical
+            orient = update_orientation (orient, "vertical")
+
+    # Check if column exists to left and was a hit
+    if x >= 2:
+        if shot_grid[x - 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
+            adjacent_hit = True  # adjacent shot above is to left so ship orientation is horizontal
+            orient = update_orientation (orient, "horizontal")
+
+    return (adjacent_hit, orient)
 
 
 def try_to_sink_ship (last_hit_xy, shot_grid, count):
     """Since last shot hit ship and did not sink it, search for adjacent shots that have also hit.
        If those shots are found, determine the orientation of the ship and try on either side of the hits.
-       If no adjacent hits, then start one above in grid (if exists) and then work clockwise.
+       If no adjacent hits, then start one row above in grid (if row exists) and then work clockwise.
 
        Parameters:
        last_hit_xy: tuple with (x, y) co-ordinates of hit on ship
@@ -142,12 +198,12 @@ def try_to_sink_ship (last_hit_xy, shot_grid, count):
     else:
         (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
 
-return (x, y)
+    return (x, y)
 
 
 
 def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_shot_xy):
-    """Start with random shots and after a ship sinks.
+    """Start game with random shots or after a ship sinks.
     
        When random shot hits ship, next shot should try to hit same ship
        by either being above or below or on either side of first hit.
@@ -160,7 +216,7 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_sho
 
        If next shot also hits, then figure out ship orientation and shot along that track.
 
-       So unlike other random shot selections, this function need to track last successful hit 
+       So unlike other random shot selections, this function needs to track last successful hit 
        so that next attempt can be based on that information.
 
        Several ways to record last hit: either x,y co-ordinates or mark that somehow on shot_grid.
@@ -188,8 +244,8 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_sho
         else:
             (x, y) = try_to_sink_ship (last_hit_xy, shot_grid, count)
 
-
-    return (x, y, count)
+    print(x, y, count + 1)
+    return (x, y, count + 1)
 
 
 def find_random_spot(max_x, max_y, shot_grid, count):
