@@ -103,39 +103,41 @@ def find_random_odd_spot(max_x, max_y, shot_grid, count):
 
 
 def update_orientation(orient, current):
-    """ Determine the orientation(s) of the ship or ships adjacent to hit
+    """Determine the orientation(s) of the ship or ships adjacent to hit
        by checking all four spots adjacent to hit spot
+
+       If orientation is already "both" it cannot change.
+       If "none", set it to whatever has been discovered adjacent.
+       If it is already "vertical" but adjacent horizontal exists then change to "both"
+       If if is already "horizontal" but adjacent vertical exists then change to "both"
 
        Parameters:
        orient: existing orientation ("none", "vertical", "horizontal", "both")
-       current: orientation of latest check
+       current: orientation of latest adjacent hit
 
        Return: 
        orient: updated orientation value
     """
 
-    if orient == "both":
-        break                # cannot add to this state
-    elif orient == "none":
-        orient = current    # set to current orientation
-        break
-    elif orient == "vertical" and current =="horizontal":
-        orient = "both"     # both orientations are possible
-        break
-    elif orient == "horizontal" and current == "vertical":
-        orient = both       # both orientations are possible
-        break
+    if orient != "both": # cannot add if state is "both"
+        if orient == "none":
+            orient = current    # set to current orientation
+        elif orient == "vertical" and current =="horizontal":
+            orient = "both"     # both orientations are possible
+        elif orient == "horizontal" and current == "vertical":
+            orient = "both"       # both orientations are possible
+        fi
     fi
 
     return orient
 
 
 def adjacent_hit(last_hit_xy, shot_grid):
-    """Determine if an adjacent row or column exists if there was a previous hit 
+    """Determine if an adjacent row or column exists and if there was a previous hit 
        adjacent to latest hit.
 
        That is a good indication that the same ship was hit so we
-       can guess with orientation the ship has.
+       can guess what orientation the ship has.
 
        There is a small chance that the adjacent hit is on a different ship so also
        need to handle that scenario.
@@ -145,7 +147,7 @@ def adjacent_hit(last_hit_xy, shot_grid):
        shot_grid: record of all previous shots
 
        Return:
-       adjacent_hit: boolean - True if there was an adjacent hit 
+       a_hit: boolean - True if there was an adjacent hit 
        orientation: "none", "vertical", "horizontal" or "both"
     """
     a_hit = False
