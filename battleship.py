@@ -148,34 +148,34 @@ def adjacent_hit(last_hit_xy, shot_grid):
        adjacent_hit: boolean - True if there was an adjacent hit 
        orientation: "none", "vertical", "horizontal" or "both"
     """
-    adjacent_hit = False
+    a_hit = False
     orient = "none"
 
     #Check if row above exists and was a hit
     if y >= 2:
         if shot_grid[x][y - 1] != (NO_SHOT_CHAR or MISS_CHAR):
-            adjacent_hit = True  # adjacent shot above is hit so ship orientation is vertical
+            a_hit = True  # adjacent shot above is hit so ship orientation is vertical
             orient = update_orientation (orient, "vertical")
 
     # Check if column exists to right and was a hit
     if x <= 9:
         if shot_grid[x + 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
-            adjacent_hit = True  # adjacent shot above is to right so ship orientation is horizontal
+            a_hit = True  # adjacent shot above is to right so ship orientation is horizontal
             orient = update_orientation (orient, "horizontal")
 
     #Check if row below exists and was a hit
     if y <= 9:
         if shot_grid[x][y + 1] != (NO_SHOT_CHAR or MISS_CHAR):
-            adjacent_hit = True  # adjacent shot below is hit so ship orientation is vertical
+            a_hit = True  # adjacent shot below is hit so ship orientation is vertical
             orient = update_orientation (orient, "vertical")
 
     # Check if column exists to left and was a hit
     if x >= 2:
         if shot_grid[x - 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
-            adjacent_hit = True  # adjacent shot above is to left so ship orientation is horizontal
+            a = True  # adjacent shot above is to left so ship orientation is horizontal
             orient = update_orientation (orient, "horizontal")
 
-    return (adjacent_hit, orient)
+    return (a_hit, orient)
 
 
 def try_to_sink_ship (last_hit_xy, shot_grid, count):
@@ -192,11 +192,12 @@ def try_to_sink_ship (last_hit_xy, shot_grid, count):
        (x, y, count): next shot to take and incremented count
     """
 
-    if adjacent_hit(last_hit_xy, shot_grid) == True:
-        determine_possible_ship_orientation(last_hit_xy, shot_grid)
-        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
+    (a_hit, orient) =  adjacent_hit(last_hit_xy, shot_grid)
+
+    if a_hit == True:
+        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid, orient)
     else:
-        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid)
+        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid, orient)
 
     return (x, y)
 
