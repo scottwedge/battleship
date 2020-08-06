@@ -497,6 +497,8 @@ def main():
     max_x = 0
     max_y = 0
     count = 0  # initialize number of shots taken
+    last_hit_xy = (0, 0) # initialize
+    last_shot_xy = (0, 0)  # Initialize
     (game_over, x, y, n, p) = handle_args(sys.argv)   # handle command line arguments
     shot_pattern = p
     print("SHOT_PATTERN=", shot_pattern)
