@@ -350,7 +350,7 @@ def is_game_over(max_x, max_y, shot_pattern, count):
     See if all ships have been sunk. If yes then game is over
     """
 
-def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
+def choose_shot(max_x, max_y, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy):
     """Select location on grid to shoot
        Return that grid location
 
@@ -384,7 +384,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
     return (x, y, count)
 
 
-def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
+def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy):
     """Generate shot location and track results on shot_grid.
        If shot hits then get another free shot?
        Concentrate on damaged ship or keep shooting randomly?
@@ -410,7 +410,7 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count):
 
     # (game_over, count) = is_game_over(max_x, max_y, shot_pattern, count)
 
-    (x, y, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count)
+    (x, y, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
     
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
@@ -518,7 +518,7 @@ def main():
 
     # Start playing game 
     while not game_over:
-        count = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count)
+        count = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
         # print_grid(max_x, max_y, shot_grid)
 
