@@ -375,7 +375,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count):
     elif shot_pattern == "random_even":
         (x, y, count) = find_random_even_spot(max_x, max_y, shot_grid, count)
     elif shot_pattern == "smart_random":
-        (x, y, count) = find_smart_random_spot(max_x, max_y, shot_grid, count)
+        (x, y, count) = find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_shot_xy)
 
     else:
         print(shot_pattern)
