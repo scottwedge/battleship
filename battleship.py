@@ -247,8 +247,8 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_sho
         else:
             (x, y) = try_to_sink_ship (last_hit_xy, shot_grid, count)
 
-    print(x, y, count + 1)
-    return (x, y, count + 1)
+    print(x, y, count, "DEBUG_A")
+    return (x, y, count)
 
 
 def find_random_spot(max_x, max_y, shot_grid, count):
