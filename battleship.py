@@ -132,7 +132,11 @@ def update_orientation(orient, current):
     return orient
 
 
-def adjacent_hit(last_hit_xy, shot_grid):
+def determine_next_smart_shot(last_hit_xy, last_shot_xy, shot_grid, orient):
+    return(x, y)
+
+
+def adjacent_hit(last_hit_xy, last_shot_xy, shot_grid):
     """Determine if an adjacent row or column exists and if there was a previous hit 
        adjacent to latest hit.
 
@@ -144,6 +148,7 @@ def adjacent_hit(last_hit_xy, shot_grid):
 
        Parameters:
        last_hit_xy: (x, y) tuple with coordinates of last hit
+       last_shot_xy: (x, y) tuple with coords of last shot
        shot_grid: record of all previous shots
 
        Return:
@@ -158,35 +163,40 @@ def adjacent_hit(last_hit_xy, shot_grid):
         if shot_grid[x][y - 1] != (NO_SHOT_CHAR or MISS_CHAR):
             a_hit = True  # adjacent shot above is hit so ship orientation is vertical
             orient = update_orientation (orient, "vertical")
+            print("____________________ ORIENT = vertical     DEBUG_F")
 
     # Check if column exists to right and was a hit
     if x <= 9:
         if shot_grid[x + 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
             a_hit = True  # adjacent shot above is to right so ship orientation is horizontal
             orient = update_orientation (orient, "horizontal")
+            print("____________________ ORIENT = horizontal    DEBUG_F")
 
     #Check if row below exists and was a hit
     if y <= 9:
         if shot_grid[x][y + 1] != (NO_SHOT_CHAR or MISS_CHAR):
             a_hit = True  # adjacent shot below is hit so ship orientation is vertical
             orient = update_orientation (orient, "vertical")
+            print("____________________ ORIENT = vertical    DEBUG_F")
 
     # Check if column exists to left and was a hit
     if x >= 2:
         if shot_grid[x - 1][y] != (NO_SHOT_CHAR or MISS_CHAR):
             a = True  # adjacent shot above is to left so ship orientation is horizontal
             orient = update_orientation (orient, "horizontal")
+            print("____________________ ORIENT = horizontal    DEBUG_F")
 
     return (a_hit, orient)
 
 
-def try_to_sink_ship (last_hit_xy, shot_grid, count):
-    """Since last shot hit ship and did not sink it, search for adjacent shots that have also hit.
+def try_to_sink_ship (last_hit_xy, last_shot_xy, shot_grid, count):
+    """Since last shot hit ship but did not sink it, search for adjacent shots that have also hit.
        If those shots are found, determine the orientation of the ship and try on either side of the hits.
        If no adjacent hits, then start one row above in grid (if row exists) and then work clockwise.
 
        Parameters:
        last_hit_xy: tuple with (x, y) co-ordinates of hit on ship
+       last_shot_xy: last attempt to hit ship
        shot_grid: record of previous shots (so not overlap)
        count: count of total shots taken
 
@@ -194,12 +204,12 @@ def try_to_sink_ship (last_hit_xy, shot_grid, count):
        (x, y, count): next shot to take and incremented count
     """
 
-    (a_hit, orient) =  adjacent_hit(last_hit_xy, shot_grid)
+    (a_hit, orient) =  adjacent_hit(last_hit_xy, last_shot_xy, shot_grid)
 
     if a_hit == True:
-        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid, orient)
+        (x, y) = determine_next_smart_shot(last_hit_xy, last_shot_xy, shot_grid, orient)
     else:
-        (x, y) = determine_next_smart_shot(last_hit_xy, shot_grid, orient)
+        (x, y) = determine_next_smart_shot(last_hit_xy, last_shot_xy, shot_grid, orient)
 
     return (x, y)
 
@@ -245,7 +255,7 @@ def find_smart_random_spot(max_x, max_y, shot_grid, count, last_hit_xy, last_sho
             if shot_grid[y][x] == NO_SHOT_CHAR:
                 valid_choice = True
         else:
-            (x, y) = try_to_sink_ship (last_hit_xy, shot_grid, count)
+            (x, y) = try_to_sink_ship (last_hit_xy, last_shot_xy, shot_grid, count)
 
     print(x, y, count, "DEBUG_A")
     return (x, y, count)
