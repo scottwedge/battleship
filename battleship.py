@@ -416,10 +416,13 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
         shot_grid[y][x] = ship_grid[y][x] #update shot grid to show hit ship character
+        print("......................   HIT   DEBUG_C")
+        last_hit_xy = last_shot_xy        # Update last hit xy to be last shot
     else:
         shot_grid[y][x] = MISS_CHAR #update shot grid to show a miss
+        print("......................   MISS   DEBUG_D")
 
-    return count
+    return (count, last_hit_xy, last_shot_xy)
 
 
 def show_help():
@@ -521,7 +524,7 @@ def main():
 
     # Start playing game 
     while not game_over:
-        count = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
+        (count, last_hit_xy, last_shot_xy) = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
         # print_grid(max_x, max_y, shot_grid)
 
