@@ -399,8 +399,9 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_
            Possible values are: 
                "top_left_to_bottom_right": first shot is top left and last shot is bottom right
                "random": shots selected randomly
-               "random-even": sum of row number and column number add to even number
-               "random-odd": sum of row number and column number add to odd number
+               "random_even": sum of row number and column number add to even number
+               "random_odd": sum of row number and column number add to odd number
+               "random_smart": continue trying to sink damaged ship
                "manual": manually selected by player
        count: if "random" need to count how many turns have been taken
 
