@@ -133,6 +133,15 @@ def update_orientation(orient, current):
 
 
 def determine_next_smart_shot(last_hit_xy, last_shot_xy, shot_grid, orient):
+    """Determine next shot based on last hit, last shot, shot grid and suspected ship orientation.
+       If orientation is vertical and spot above is available, then return that value.
+       If orientation is vertical and spot above is MISS, then return available spot below hit.
+       If orientation is horizontal and spot to left is available, then return that point.
+       If orientation is horizontal and spot to left is not available, then return spot to the right of hit.
+    """
+
+       
+
     return(x, y)
 
 
