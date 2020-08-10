@@ -403,7 +403,7 @@ def choose_shot(max_x, max_y, shot_grid, shot_pattern, count, last_hit_xy, last_
     return (x, y, count)
 
 
-def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy):
+def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy, shot_history):
     """Generate shot location and track results on shot_grid.
        If shot hits then get another free shot?
        Concentrate on damaged ship or keep shooting randomly?
@@ -431,6 +431,8 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_
     # (game_over, count) = is_game_over(max_x, max_y, shot_pattern, count)
 
     (x, y, count) = choose_shot(max_x, max_y, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
+
+    shot_history.append((x, y))
     
     hit = determine_hit_or_miss(x, y, ship_grid, shot_grid)
     if hit:
@@ -441,7 +443,7 @@ def play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_
         shot_grid[y][x] = MISS_CHAR #update shot grid to show a miss
         print("......................   MISS   DEBUG_D")
 
-    return (count, last_hit_xy, last_shot_xy)
+    return (count, last_hit_xy, last_shot_xy, shot_history)
 
 
 def show_help():
@@ -522,6 +524,7 @@ def main():
     count = 0  # initialize number of shots taken
     last_hit_xy = (0, 0) # initialize
     last_shot_xy = (0, 0)  # Initialize
+    shot_history = []  # Initialize shot history list
     (game_over, x, y, n, p) = handle_args(sys.argv)   # handle command line arguments
     shot_pattern = p
     print("SHOT_PATTERN=", shot_pattern)
@@ -543,7 +546,7 @@ def main():
 
     # Start playing game 
     while not game_over:
-        (count, last_hit_xy, last_shot_xy) = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy)
+        (count, last_hit_xy, last_shot_xy, shot_history) = play_game(max_x, max_y, ship_grid, shot_grid, shot_pattern, count, last_hit_xy, last_shot_xy, shot_history)
         game_over = all_ships_sunk(max_x, max_y, ship_grid, shot_grid, count)
         # print_grid(max_x, max_y, shot_grid)
 
@@ -553,6 +556,7 @@ def main():
         print("")
 
     print(shot_pattern,"     ", "GAME OVER","     "," SHIP GROUPS=", n, "    ", "COUNT=", count, "of", max_x * max_y)
+    print(shot_history, "DEBUG_J")
 
 if __name__ == "__main__":
     main()
