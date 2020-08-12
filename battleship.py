@@ -203,7 +203,8 @@ def try_to_sink_ship (last_hit_xy, last_shot_xy, shot_grid, count):
        If those shots are found, determine the orientation of the ship and try on either side of the hits.
        If no adjacent hits, then start one row above in grid (if row exists) and then work clockwise.
 
-       NEW  Or can create a list of adjacent possible shots and go through that list.
+       NEW  Or can create a list of adjacent possible shots and go through that list
+       testing every untried spot until ship sinks
 
        Parameters:
        last_hit_xy: tuple with (x, y) co-ordinates of hit on ship
